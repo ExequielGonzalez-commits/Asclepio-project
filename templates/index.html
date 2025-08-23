@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename = 'style.css')}}">
+    <title>DateView</title>
+</head>
+<body>
+        <div class="titulo">
+                <h1>Project Asclepio</h1>
+        </div>
+    <div class="conteiner">
+
+    
+            <div class="card">
+                <figure>
+                    <img class="heart" src="{{url_for('static', filename = 'imagenes/corazon.png')}}" alt="imagen corazon" width="70px">
+                </figure>
+                <div class="content">
+                    <h5>BPM</h5>
+                <p><span id="pulso">---</span></p>
+                </div>
+            </div>
+            <div class="card">
+                <figure>
+                    <img src="{{url_for('static', filename = 'imagenes/termometro.png')}}" alt="imagen termometro" width = "70px">
+                </figure>
+                <div class="content">
+                    <h5>temperatura</h5>
+                    <p><span id="temp">---</span></p>
+                </div>
+            </div>
+    </div>
+    <script>
+        /* creamos una variable para almacenar la ip del web scoket */
+        let direccionSocket = new webSocket("ws://192.168.1.50:81/");
+        direccionSocket.onopen = function(){
+            console.log("conectado al web socket de la esp 32")
+        };
+        direccionSocket.onmessage() = function(event){
+            let data = JSON.parse(event.data);
+            document.getElementById("temp").innerText = data.sensor_temp;
+            document.getElementById("pulso").innerText =  data.sensor_pulso_cardiaco;
+        }
+    </script>
+</body>
+</html>
