@@ -31,6 +31,7 @@
 #include "heartRate.h"
 #include <LiquidCrystal_I2C.h>
 #include <WebSocketsServer.h>
+#include <HTTPClient.h>
 
 LiquidCrystal_I2C lcd(0x27, 20,4);
 
@@ -45,12 +46,12 @@ long lastBeat = 0; //Time at which the last beat occurred
 
 float temp = 0.0;
 //definir variables de wifi para poder trabajar
-//const char* ssid = "WIFI - FLIA NIEVA";
-//const char* password = "rio22020";
+const char* ssid = "WIFI-CARABAJAL";
+const char* password = "luymaxy1915";
 float beatsPerMinute;
 int beatAvg;
 unsigned long lastReadMLX = 0;
-
+unsigned long ultimoEnvio = 0;
 //instanciamos al objeto websocket en un puerto
 //WebSocketsServer webSocket = WebSocketsServer(81);
 void setup()
@@ -73,15 +74,15 @@ void setup()
   particleSensor.setPulseAmplitudeRed(0x0A); //Turn Red LED to low to indicate sensor is running
   particleSensor.setPulseAmplitudeGreen(0); //Turn off Green LED
 
-  //WiFi.begin(ssid, password);
-  //while(WiFi.status() != WL_CONNECTED){
-    //delay(500);
-    //Serial.print(".");
-  //}
+  WiFi.begin(ssid, password);
+  while(WiFi.status() != WL_CONNECTED){
+    delay(500);
+    Serial.print(".");
+  }
   Serial.print("");
   Serial.println("wifi conectado con exito!");
   Serial.print("su direccion IP es:");
-  //Serial.println(WiFi.localIP());
+  Serial.println(WiFi.localIP());
 
 
 }
@@ -117,6 +118,7 @@ void loop()
   //Serial.print(beatsPerMinute);
   //Serial.print(", Avg BPM=");
   //Serial.print(beatAvg);
+
   if (millis() - lastReadMLX >= 100) {
     temp = mlx.readObjectTempC();
       if (!isnan(temp)) {
@@ -130,6 +132,7 @@ void loop()
       Serial.print(" MLX fallo");
     }
     lastReadMLX = millis();
+
   }
 
   // Mostrar BPM en el LCD
@@ -138,8 +141,19 @@ void loop()
   lcd.print("    ");
   lcd.setCursor(5,3);
   lcd.print(beatAvg);
-  doc["sensor_pulso_cardiaco"] = beatAvg;
-  doc["sensor_temp"] = temp;
+   
+  if(WiFi.status() == WL_CONNECTED && millis() - ultimoEnvio >= 2000){
+    HTTPClient http;
+    http.begin("http://192.168.1.54:4000/api/envio");
+    http.addHeader("Content-Type", "application/json");
+    doc["sensor_pulso_cardiaco"] = beatAvg;
+    doc["sensor_temp"] = temp;
+    String json;
+    serializeJson(doc, json);
+    //crear varibale para enviar
+    int envio = http.POST(json);
+    http.end();
+  }
 
 }
 
