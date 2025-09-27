@@ -1,0 +1,55 @@
+¡Claro! Vamos a desglosar paso a paso esta línea:
+
+```cpp
+server.on("/datos", HTTP_GET, [](AsyncWebServerRequest *request){
+  String json = "{\"temp\":25.5, \"hum\":60}";
+  request->send(200, "application/json", json);
+});
+```
+
+---
+
+### 1. `server.on("/datos", HTTP_GET, ...)`
+
+* **`server.on`**: Es un método para definir una ruta o endpoint en el servidor web.
+* `"/datos"`: Es la URL o ruta que responderá el servidor. Por ejemplo, si tu ESP32 está en `192.168.1.5`, esta función se ejecutará cuando alguien visite `http://192.168.1.5/datos`.
+* `HTTP_GET`: Significa que esta ruta responde a peticiones HTTP de tipo GET (es decir, cuando alguien solicita datos, como al abrir esa URL en un navegador).
+
+---
+
+### 2. `[](AsyncWebServerRequest *request){ ... }`
+
+* Esto es una **función lambda** o función anónima en C++.
+* Representa el código que se ejecutará cuando llegue una petición GET a la ruta `/datos`.
+* Recibe un puntero `request` que contiene toda la información de la petición que hizo el cliente (el navegador u otro dispositivo).
+
+---
+
+### 3. `String json = "{\"temp\":25.5, \"hum\":60}";`
+
+* Aquí creamos una variable `json` de tipo String.
+* El contenido es un texto que representa un objeto JSON: `{ "temp": 25.5, "hum": 60 }`.
+* Fíjate que para incluir las comillas dobles dentro del string usamos `\"` para escaparlas, porque en C++ las comillas delimitan el texto.
+
+---
+
+### 4. `request->send(200, "application/json", json);`
+
+* Esta línea envía la respuesta al cliente que hizo la petición.
+* `200` es el **código HTTP de éxito** (OK).
+* `"application/json"` es el **tipo de contenido** (MIME type), indicando que lo que enviamos es JSON.
+* `json` es el contenido que enviamos (el texto con el JSON creado antes).
+
+---
+
+### Resumen
+
+Cuando alguien entra a `http://IP/datos`:
+
+* El servidor ejecuta la función lambda.
+* Crea el JSON con la temperatura y humedad fijas.
+* Envía ese JSON al cliente con un código 200 y tipo `application/json`.
+
+---
+
+¿Querés que hagamos un ejemplo con datos que cambian dinámicamente, como el valor de un sensor?

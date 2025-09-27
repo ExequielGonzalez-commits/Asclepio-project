@@ -1,0 +1,281 @@
+from flask import Flask,jsonify,request,render_template
+from Models import db, sensors
+from logging import exception
+
+app = Flask(__name__)#nombre de fichero actual
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:////home/darkh4t/Escritorio/rest api/database/sensors.db" #se debe de copiar toda la ruta(igual a la de la base de datos en el path)
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False#para que no salten errores molestos
+db.init_app(app) #este es el tunel que realiza la base de datos con flask
+
+obtener_json = {}
+#aqui empiezan las rutas
+
+#end point para enviar los datos
+
+@app.route("/api/envio", methods = ["POST"])
+
+def enviar_datos_sensor():
+    global obtener_json
+    obtener_json = request.get_json()
+    datos_sensor = sensors(
+        sensor_temp = obtener_json['sensor_temp'], 
+        sensor_pulso_cardiaco = obtener_json['sensor_pulso_cardiaco'])
+    temperatura_guardar, pulso_guarda = datos_sensor.rangeWarning()
+    if temperatura_guardar is not None or pulso_guarda is not None:
+        new_data = sensors(
+            sensor_temp = temperatura_guardar,
+            sensor_pulso_cardiaco = pulso_guarda
+        )
+        db.session.add(new_data)
+        db.session.commit()
+        return jsonify({'mensaje': 'dato posiblemente peligroso guradado!'}), 200
+    else:
+        return jsonify({'mensaje':'dato ignorado'})
+    
+#end point para obtener los datos
+
+@app.route("/api/obtener", methods = ["GET"])
+
+def conseguir_datos_sensor():
+    sensores_data_obtenidos = sensors.query.all()
+    generadorPy = [serializeFormat.serializar() for serializeFormat in sensores_data_obtenidos ]
+
+
+#def basura():
+        #@app.route("/api/pulso", methods=["GET"])
+
+        #def conseguir_datos_pulso():
+        #pulso = sensors.query.order_by(sensors.fecha_hora.desc()).first()
+        #if pulso:
+            #return render_template('index.html', data = pulso )
+        #else:
+            #return jsonify({"mensaje":"no hay datos en db"}), 400
+
+
+
+        #@app.route("/api/mostrar", methods = ["POST"])
+        #def RecibirDatos():
+        #try:
+            #global datos
+            #datos = request.get_json()
+            #return jsonify({"mensaje":"los datos fueron recibidos"})
+        #except Exception as r:
+            #return jsonify({"mensaje":"ERROR","error": str(r)}),400
+
+
+@app.route("/api/ver", methods = ['GET'])
+def verDatos():
+    return jsonify(obtener_json),200
+    #generar_salida = []
+    #for s in sensores_data_obtenidos:
+        #generar_salida.append({
+            ##"id": s.id,
+            #"sensor_temp": s.sensor_temp,fla
+            #"sensor_pulso_cardiaco": s.sensor_pulso_cardiaco
+        #})
+    
+#@app.route("/")#cuando accedamos a esta direccion se ejecutara la funcion que tengamos abajo
+#def home():
+    #1 necesitamos cargar el html
+    #return render_template('index.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#def home():
+    return "<h1>welcome home, this is a page about sensors wiht flask and sqlite</h1>"
+#@app.route("/api/enviar", methods=["POST"])
+#def postDataSensores():
+    #1 necesitamos recibir la data en formato json(desde postman, arduino o algo )
+    data_recibida = request.get_json()
+    #2 vamos a crear variables para almacenar esto
+    sensor_temperatura = data_recibida['sensor_de_temperatura']
+    sensor_pulso_cardiaco = data_recibida['sensor_de_pulso_cardiaco']
+    cursor = db.cursor()
+    insertar_datos_db = "INSERT INTO sensors()"
+
+
+
+
+
+
+
+
+#@app.route("/api/sensors", methods=["GET"])#como solo queremos leer solo aceptamos el metodo http GET para hacer oprecaiones de lectura de la base de datos
+#def getDatosSensores():
+    #try: #intetamos a acceder a la base de datos
+        #pedir_datos_sensor = sensors.query.all()#pedimos todoas los datos
+        #creamos un generador de python
+        #generadorPy = [registro.serializar() for registro in pedir_datos_sensor]
+        #return jsonify(generadorPy),200 #lo pasamos a jsonify y le decimos que nos regrese 200 si esta 
+    #except Exception:#en dado caso de que se procuzca un problema impirmioms esto
+        #print("[SERVER]: Error")
+        #exception("{SERVER}: error ->")
+        #return jsonify({"msj: ocurrio un error"}), 400
+#@app.route("/api/OneSensor")
+#def getOneSensor():
+    #try:
+        #getDataTemp = request.args["sensor_temp"]
+        ##data = sensors.query.filter_by(sensor=getDataTemp)
+        #if not data:
+            #return jsonify({"este tipo de sensor no existe"}), 200
+        #else:
+            #return jsonify(data.serializar()),200
+    #except Exception:
+        #exception("[SERVER] error ->")
+        #return jsonify({"msg: ah ocurrido un error"})
+#para mostrar todos los datos en el navegador utilizamos json (en este caso la librerias jsonify), para asi enviar los datos al navegador y poder mostrarlos
+if __name__ == "__main__":
+    app.run(debug=True,port=4000)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+para crear el grafico Chart
+
+          var ctx = document.getElementById("myChart");
+      var myChart = new Chart(ctx,{
+        type: "line",
+        data:{
+            datasets: [{
+                label:"bpm",
+                backgroundColor: ["#FF0000"],
+                borderColor: [""],
+                borderWidth:1
+            }]
+        },
+        options:{
+            scales:{
+                y:{
+                    beginAtZero:true
+                }
+            },
+            layout:{
+                padding:40
+            }
+        }
+      })
+      let  url = "http://192.168.1.83:5000/api/datosBPM"
+      fetch(url)
+        .then(response => response.json())
+        .then(datos => mostrar(datos))
+        .catch(error => console.log(error))
+
+        const mostrar = (bpm) =>{
+            bpm.forEach(element => {
+                myChart.data.labels.push(element.fecha_hora);
+                myChart.data.datasets[0].data.push(element.sensor_pulso_cardiaco);
+                
+            });myChart.update();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        var ctx = document.getElementById("myChart");
+        var myChart = new Chart(ctx,{
+        type: "line",
+        data:{
+            datasets: [{
+                label:"bpm",
+                backgroundColor: ["#FF0000"],
+                borderColor: [""],
+                borderWidth:1,
+                tension: 0.3, // curva suave
+                spanGaps:false,
+                data: [] // se llenará con `mostrar()`
+            }]
+        },
+        options:{
+            scales:{
+                x:{
+                    type:'time',
+                    title: {display:true, text:"fecha"},
+                    time:{
+                        //unit:'day',
+                        //displayFormats:{
+                            //day: 'yyyy-MM-dd'
+                        //},
+                        tooltipFormat: 'DD T' // Muestra hora completa en el tooltip
+                    },
+                    //ticks:{
+                        //source:"data",
+                        //autoSkip: true,
+                        //maxRotation: 45,
+                        //minRotation:45,
+                        //padding:30,
+                        //maxTicksLimit:10
+
+                    //}
+                },
+                y:{
+                    title: { display: true, text: 'Valor' }
+                }
+            },
+            layout:{
+                padding:40
+            }
+        }
+      })
+      let  url = "http://192.168.1.83:5000/api/datosBPM"
+      fetch(url)
+        .then(response => response.json())
+        .then(datos => mostrar(datos))
+        .catch(error => console.log(error))
+
+        const mostrar = (bpm) =>{
+            const puntos = bpm.map(d=>({
+                x: d.fecha + "T" + d.hora,
+                y: d.sensor_pulso_cardiaco
+
+            }));
+            myChart.data.datasets[0].data = puntos;
+            myChart.update();
+            //bpm.forEach(element => {
+                //myChart.data.labels.push(element.fecha);
+                //myChart.data.datasets[0].data.push(element.sensor_pulso_cardiaco);
+                
+            //});myChart.update();
+        }

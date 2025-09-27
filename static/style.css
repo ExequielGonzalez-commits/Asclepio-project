@@ -1,0 +1,89 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+
+*{
+    padding: 0px;
+    margin: 0;
+    box-sizing: border-box;
+}
+body{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+
+    flex-direction: column;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.titulo{
+    text-align: center;
+    display: flex;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background-color: blue;
+    color: white;
+    justify-content: space-between;
+
+}
+.titulo h1{
+    margin: auto;
+}
+.btn-moon {
+  background: none;    /* sin fondo */
+  border: none;        /* sin borde */
+  cursor: pointer;     /* mano al pasar */
+  padding: 10px;
+}
+
+.btn-moon i {
+  font-size: 2rem;     /* tamaño del ícono */
+  color: white;        /* color del ícono */
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-moon:hover i {
+  color: yellow;       /* cambia color */
+  transform: scale(1.2);
+}
+
+
+.conteiner{
+    display: flex;
+    width: 100%;
+    max-width: 11000px;
+    justify-content: center;
+    border-radius: 8px;
+    box-shadow: 0 0 30px #0006;
+} 
+.card{
+    width: 200px;
+    height: 200px;
+    margin: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.2);
+}
+.card img{
+    display: block;
+    padding: 10px;
+    margin: auto;
+}
+.content{
+    text-align: center;
+    padding: 30px;
+}
+.content h5{
+    font-weight: 900;
+}
+.heart{
+    animation: latido 1s infinite;
+}
+@keyframes latido{
+    0%{
+        transform: scale(1);
+    }
+    15%{
+        transform: scale(1.1);
+    }
+    
+}

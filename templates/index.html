@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <link rel="stylesheet" href="{{url_for('static', filename = 'style.css')}}">
+
+    <title>DateView</title>
+</head>
+<body>
+        <div class="titulo">
+                <h1>Project Asclepio</h1>
+                <button class="darkMode"><img  class="darkMode"    src="{{url_for('static',filename = 'imagenes/moon.svg')}}" alt="lunaicon" width="24" height="24"></button>
+                <button class="btn-moon">
+                      <i class="bi bi-moon"></i>
+                </button>
+  
+        </div>
+        
+    <div class="conteiner">
+
+    
+            <div class="card">
+                <figure>
+                    <img class="heart" src="{{url_for('static', filename = 'imagenes/corazon.png')}}" alt="imagen corazon" width="70px">
+                </figure>
+                <div class="content">
+                    <h5>BPM</h5>
+                <p><span id="pulso">---</span></p>
+                </div>
+            </div>
+            <div class="card">
+                <figure>
+                    <img src="{{url_for('static', filename = 'imagenes/termometro.png')}}" alt="imagen termometro" width = "70px">
+                </figure>
+                <div class="content">
+                    <h5>temperatura</h5>
+                    <p><span id="temp">---</span></p>
+                </div>
+            </div>
+    </div>
+    
+    <script>
+        async function actualizador() {
+            const response = await fetch("/api/ver");
+            const data = await response.json();
+            document.getElementById("temp").innerText = data.sensor_temp ?? "--";
+            document.getElementById("pulso").innerText = data.sensor_pulso_cardiaco ?? "--";
+            
+        }
+
+        setInterval(actualizador,2000);
+        actualizador();
+    </script>
+</body>
+</html>

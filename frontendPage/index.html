@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+      <link rel="stylesheet" href="css/style.css">
+
+    <title>DateView</title>
+</head>
+<body>
+        <div class="titulo">
+                <h1>Project Asclepio</h1>
+                <button id="button_darkMode"  class="btn-moon">
+                      <i class="bi bi-moon"></i>
+                </button>
+  
+        </div>
+        
+    <div class="conteiner">
+
+    
+            <div class="card">
+                <figure>
+                    <span class="heart">
+                        <i class="bi bi-heart-pulse-fill"></i>
+                    </span>
+                </figure>
+                <div id="g2" class="gauge" style="width:180px; height:120px;"></div>
+            </div>
+            <div class="card">
+                <figure>
+                    <span>
+                        <i class="bi bi-thermometer-half"></i>
+                    </span>
+                </figure>
+                <div id="g3" class="gauge" style="width: 180px; height: 120px;"></div>                
+            </div>
+
+           
+            
+    </div>
+    <div class="titulo_secundario">
+            <h3>graphic</h3>
+            <div id="chart"></div>
+    </div>
+ 
+    <!--<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <script src="javascript/justgage-1.2.2/raphael-2.1.4.min.js"></script>
+    <script src="javaScript/justgage-1.2.2/justgage.js"></script>
+    <script src="javaScript/justgage-1.2.2/main.js"></script>
+
+    <script>
+        
+    
+        var g2;
+        window.onload = function(){
+        var g2 = new JustGage({
+          id: "g2",
+          value: 0,
+          min: 50,
+          max: 120,
+          gaugeWidthScale: 0.6,
+          counter: true,
+          title: "BPM",
+          label: "bpm",
+          formatNumber: true,
+          levelColors: [
+            "#dc3545",
+            "#ffc107",
+            "#28a745"
+        ],
+        startAnimationTime: 2000,
+        startAnimationType: ">",
+        refreshAnimationTime: 1000,
+        Symbol:'%',
+            pointer: true,
+            pointerOptions: {
+            toplength: -15,
+            bottomlength: 10,
+            bottomwidth: 12,
+            color: '#8e8e93',
+            stroke: '#ffffff',
+            stroke_width: 3,
+            stroke_linecap: 'round'
+        },
+        counter:true,
+        decimals:2
+        
+        });
+        var g3 = new JustGage({
+            id: "g3",
+            value: 0,
+            min:0,
+            max:100,
+            gaugeWidthScale: 0.6,
+            Symbol:'%',
+            pointer: true,
+            pointerOptions: {
+                toplength: -15,
+                bottomlength: 10,
+                bottomwidth: 12,
+                color: '#8e8e93',
+                stroke: '#ffffff',
+                stroke_width: 3,
+                stroke_linecap: 'round'
+            },
+
+            title:"SpO2",
+            label:"temp",
+            counter:true,
+            decimals:2
+
+        })
+        setInterval(function() {
+            fetch("http://192.168.1.83:5000/api/ver").then((response)=>{
+                    return response.json()
+            }).then((data) => {
+                if(data.sensor_IR !== undefined && data.sensor_pulso_cardiaco !== undefined){
+                g3.refresh(data.sensor_IR);
+                g2.refresh(data.sensor_pulso_cardiaco);        
+                }
+               
+            })
+        }, 2500);
+
+      };
+
+
+      fetch("http://192.168.1.83:5000/api/datosBPM")
+      .then(response => response.json())
+      .then(data=> {
+        const dataBPM_hora = data.map(d =>({
+            x:new Date(`${d.fecha} ${d.hora}`).getTime(),
+            y:d.sensor_pulso_cardiaco
+        }));
+        //const data_fecha = data.map(d=> d.fecha)
+        var options = {
+        chart: {
+            type:'line',
+            width: '100%',
+            height:'200px'
+        },
+                responsive:[{
+            breakpoint:1024,
+            options:{ chart : {width:'100%'}}
+        }],
+        series:[{
+            name:'bpm',
+            data:dataBPM_hora
+        }],
+        colors: ['#0000FF'],
+        //stroke:{
+            //curve:'smooth'
+        //},
+        tooltip:{
+            x:{
+                format:"yyyy-MM-dd HH:mm:ss",
+                show:true
+            }
+        },
+
+        markers:{
+            size:6,
+            strokeColors: '#fff',
+            strokeWidth: 2,
+            hover:{
+                size:8
+            }
+        },
+
+        xaxis:{
+            type:'datetime'
+        }
+
+      }
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render();
+      });
+     
+       
+
+        
+    </script>
+    
+
+</body>
+</html>
