@@ -7,7 +7,7 @@
 
       <link rel="stylesheet" href="css/style.css">
 
-    <title>DateView</title>
+    <title>Asclepio project</title>
 </head>
 <body>
         <div class="titulo">
@@ -51,7 +51,7 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-    <script src="javascript/justgage-1.2.2/raphael-2.1.4.min.js"></script>
+    <script src="javaScript/justgage-1.2.2/raphael-2.1.4.min.js"></script>
     <script src="javaScript/justgage-1.2.2/justgage.js"></script>
     <script src="javaScript/justgage-1.2.2/main.js"></script>
 
@@ -118,7 +118,7 @@
 
         })
         setInterval(function() {
-            fetch("http://192.168.1.83:5000/api/ver").then((response)=>{
+            fetch("/api/ver").then((response)=>{
                     return response.json()
             }).then((data) => {
                 if(data.sensor_IR !== undefined && data.sensor_pulso_cardiaco !== undefined){
@@ -132,7 +132,7 @@
       };
 
 
-      fetch("http://192.168.1.83:5000/api/datosBPM")
+      fetch("/api/datosBPM")
       .then(response => response.json())
       .then(data=> {
         const dataBPM_hora = data.map(d =>({
