@@ -7,7 +7,7 @@
 
       <link rel="stylesheet" href="css/style.css">
 
-    <title>DateView</title>
+    <title>Asclepio project</title>
 </head>
 <body>
         <div class="titulo">
@@ -118,7 +118,7 @@
 
         })
         setInterval(function() {
-            fetch("http://192.168.1.83:5000/api/ver").then((response)=>{
+            fetch("/api/ver").then((response)=>{
                     return response.json()
             }).then((data) => {
                 if(data.sensor_IR !== undefined && data.sensor_pulso_cardiaco !== undefined){
@@ -132,7 +132,7 @@
       };
 
 
-      fetch("http://192.168.1.83:5000/api/datosBPM")
+      fetch("/api/datosBPM")
       .then(response => response.json())
       .then(data=> {
         const dataBPM_hora = data.map(d =>({
