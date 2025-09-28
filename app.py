@@ -10,7 +10,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://sensores:H6E6e56EuB2EwQ5AH
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False#para que no salten errores molestos
 db.init_app(app) #este es el tunel que realiza la base de datos con flask
 #creamos una varibale global de la ruta donde esta el frontend
-direccion_front = os.path.join(os.path.dirname(__file__),"../frontendPage")
+direccion_front = os.path.join(os.path.dirname(__file__),"frontendPage")
 obtener_json = {}
 #aqui empiezan las rutas
 
