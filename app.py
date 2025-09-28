@@ -2,14 +2,15 @@ from flask import Flask,jsonify,request,render_template
 from Models import db, sensors
 from logging import exception
 from flask_cors import CORS
-
+import os
 
 app = Flask(__name__)#nombre de fichero actual
 CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///C:/Users/Estudiante/Desktop/Asclepio-project-main/database/sensors.db" #se debe de copiar toda la ruta(igual a la de la base de datos en el path)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False#para que no salten errores molestos
 db.init_app(app) #este es el tunel que realiza la base de datos con flask
-
+#creamos una varibale global de la ruta donde esta el frontend
+direccion_front = os.path.join(os.path.dirname(__file__),".../frontendPage")
 obtener_json = {}
 #aqui empiezan las rutas
 
@@ -55,6 +56,10 @@ def datosGuardadosBPM():
 @app.route("/api/ver", methods = ['GET'])
 def verDatos():
     return jsonify(obtener_json),200
+
+@app.route("/)
+def home():
+    return send_from_directory(direccion_front, "index.html")
 
 if __name__ == "__main__":
     app.run(debug=True,port=5000,host="0.0.0.0")
