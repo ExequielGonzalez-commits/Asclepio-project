@@ -64,5 +64,8 @@ def archivos_estaticos():
 def home():
     return send_from_directory(direccion_front, "index.html")
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
+with app.app_context():
+        db.create_all()
+    
     app.run(debug=True,port=5000,host="0.0.0.0")
