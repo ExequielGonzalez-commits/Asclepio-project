@@ -64,7 +64,7 @@ def verDatos():
     #return send_from_directory(direccion_front,path)
 @app.route("/")
 def home():
-    return send_static_file("index.html")
+    return app.send_static_file("index.html")
 
 if __name__ == "__main__":    
     with app.app_context():
