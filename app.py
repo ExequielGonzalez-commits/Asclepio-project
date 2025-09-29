@@ -71,13 +71,13 @@ def verDatos():
 def login():
 
         if request.method == "POST":
-            user = request.form.get("user")
-            password = request.form.get("password")
-            email = request.form.get("email")
-            number_phone = request.form.get("number_phone")
-            if user == "asclepio" and password == "asclepio123" and email == "asclepio@gmail.com" and number_phone == "54111" :
-                session["usuario"] = user
-                return redirect("/")
+                user = request.form.get("user")
+                password = request.form.get("password")
+                email = request.form.get("email")
+                number_phone = request.form.get("number_phone")
+                if user == "asclepio" and password == "asclepio123" and email == "asclepio@gmail.com" and number_phone == "54111" :
+                    session["usuario"] = user
+                    return redirect("/")
         return app.send_static_file("login.html")
 @app.route("/")
 def home():
