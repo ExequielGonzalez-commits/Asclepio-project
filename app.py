@@ -1,5 +1,6 @@
-from flask import Flask,jsonify,request,render_template, send_from_directory
+from flask import Flask,jsonify,request,render_template, send_from_directory,session,redirect
 from Models import db, sensors
+from flask_session import Session
 from logging import exception
 from flask_cors import CORS
 import os
@@ -14,8 +15,14 @@ db.init_app(app) #este es el tunel que realiza la base de datos con flask
 #creamos una varibale global de la ruta donde esta el frontend
 #direccion_front = os.path.join(os.path.dirname(__file__),"frontendPage")
 obtener_json = {}
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 #aqui empiezan las rutas
-
+user = "asclepio"
+password = "asclepio123"
+email = "asclepio@gmail.com"
+number_phone = "54111"
 #end point para enviar los datos
 
 @app.route("/api/envio", methods = ["POST"])
@@ -62,10 +69,26 @@ def verDatos():
 #@app.route("/<path:path>")
 #def archivos_estaticos():
     #return send_from_directory(direccion_front,path)
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+
+        if request.method == "POST":
+            user = request.form["user"]
+            password = request.form["password"]
+            email = request.form["email"]
+            number_phone = request.form["number_phone"]
+        if user == "asclepio" and password == "asclepio123" and email == "asclepio@gmail.com" and number_phone == "54111" :
+            session["usuario"] = user
+            return redirect("/")
+        return app.send_static_file("login.html")
 @app.route("/")
 def home():
-    return app.send_static_file("index.html")
-
+    if "user" in session:
+        return app.send_static_file("index.html")
+    else:
+        return redirect("/login")
 if __name__ == "__main__":    
     with app.app_context():
         db.create_all()

@@ -22,6 +22,7 @@ class sensors(db.Model):
                 "sensor_temp" : self.sensor_temp,
                 "sensor_pulso_cardiaco" : self.sensor_pulso_cardiaco
         }
+         
     def rangeWarning(self):
         temperatua_guardar = None
         pulso_guardar = None
