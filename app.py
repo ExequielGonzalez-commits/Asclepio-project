@@ -19,10 +19,6 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 #aqui empiezan las rutas
-user = "asclepio"
-password = "asclepio123"
-email = "asclepio@gmail.com"
-number_phone = "54111"
 #end point para enviar los datos
 
 @app.route("/api/envio", methods = ["POST"])
