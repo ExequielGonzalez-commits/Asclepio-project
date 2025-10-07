@@ -26,7 +26,7 @@ Session(app)
 def enviar_datos_sensor():
     global obtener_json
     obtener_json = request.get_json()
-    sensor_IR = obtener_json.get("sensor_IR")
+    #sensor_IR = obtener_json.get("sensor_IR")
     datos_sensor = sensors(
         sensor_temp = obtener_json['sensor_temp'],
         sensor_pulso_cardiaco = obtener_json['sensor_pulso_cardiaco'])
@@ -40,9 +40,7 @@ def enviar_datos_sensor():
         db.session.commit()
         return jsonify({'mensaje': 'dato posiblemente peligroso guradado!'}), 200
     else:
-        return jsonify({'mensaje':'dato ignorado', 
-                              'sensor_IR': sensor_IR})
-    return jsonify({'sensor_IR': sensor_IR}),200
+        return jsonify({'mensaje':'dato ignorado',})
 
 
 @app.route("/api/datosBPM")
