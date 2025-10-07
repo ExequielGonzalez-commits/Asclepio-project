@@ -40,8 +40,8 @@ def enviar_datos_sensor():
         db.session.commit()
         return jsonify({'mensaje': 'dato posiblemente peligroso guradado!'}), 200
     else:
-        return jsonify({'mensaje':'dato ignorado, 
-                              'sensor_IR': sensor_IR'})
+        return jsonify({'mensaje':'dato ignorado', 
+                              'sensor_IR': sensor_IR})
     return jsonify({'sensor_IR': sensor_IR}),200
 
 
