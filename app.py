@@ -29,7 +29,7 @@ def enviar_datos_sensor():
     #sensor_IR = obtener_json.get("sensor_IR")
     datos_sensor = sensors(
         sensor_temp = obtener_json.get['sensor_temp'],
-        sensor_pulso_cardiaco = obtener_json[.get'sensor_pulso_cardiaco'])
+        sensor_pulso_cardiaco = obtener_json.get['sensor_pulso_cardiaco'])
     temperatura_guardar, pulso_guarda = datos_sensor.rangeWarning()
     if temperatura_guardar is not None or pulso_guarda is not None:
         new_data = sensors(
