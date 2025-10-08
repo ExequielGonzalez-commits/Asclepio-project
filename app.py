@@ -29,12 +29,12 @@ def enviar_datos_sensor():
     obtener_json = request.get_json()
     #sensor_IR = obtener_json.get("sensor_IR")
     datos_sensor = sensors(
-        sensor_temp = obtener_json.get('sensor_temp'),
-        sensor_pulso_cardiaco = obtener_json.get('sensor_pulso_cardiaco'))
-    temperatura_guardar, pulso_guarda = datos_sensor.rangeWarning()
-    if temperatura_guardar is not None or pulso_guarda is not None:
+        #sensor_temp = obtener_json.get('sensor_temp'),
+        sensor_pulso_cardiaco = obtener_json.get('sensor_pulso_cardiaco')
+        )
+    pulso_guarda = datos_sensor.rangeWarning()
+    if pulso_guarda is not None:
         new_data = sensors(
-            sensor_temp = temperatura_guardar,
             sensor_pulso_cardiaco = pulso_guarda
         )
         db.session.add(new_data)
