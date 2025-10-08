@@ -56,7 +56,13 @@ def datosGuardadosBPM():
         for r in registros
    ]
     return jsonify(lista_datos), 200
-
+@app.route("/api/testdb")
+def test_db():
+    try:
+        result = db.session.execute("SELECT 1")  # consulta mínima
+        return jsonify({"mensaje": "DB OK", "resultado": list(result)}), 200
+    except Exception as e:
+        return jsonify({"mensaje": "Error DB", "error": str(e)}), 500
 @app.route("/api/ver", methods = ['GET'])
 def verDatos():
     return jsonify(obtener_json),200
@@ -84,6 +90,7 @@ def home():
         return app.send_static_file("index.html")
     else:
         return redirect("/login")
+
 if __name__ == "__main__":    
     with app.app_context():
         db.create_all()
