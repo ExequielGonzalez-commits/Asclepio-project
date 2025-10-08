@@ -79,10 +79,9 @@ def login():
 
         if request.method == "POST":
                 user = request.form.get("user")
-                password = request.form.get("password")
                 email = request.form.get("email")
-                number_phone = request.form.get("number_phone")
-                if user == "asclepio" and password == "asclepio123" and email == "asclepio@gmail.com" and number_phone == "54111" :
+                password = request.form.get("password")
+                if user == "asclepio" and password == "asclepio123" and email == "asclepio@gmail.com" :
                     session["user"] = user
                     return redirect("/")
         return app.send_static_file("login.html")
