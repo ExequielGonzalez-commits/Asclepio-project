@@ -28,16 +28,10 @@ def enviar_datos_sensor():
     global obtener_json
     obtener_json = request.get_json()
     #sensor_IR = obtener_json.get("sensor_IR")
-    datos_sensor = sensors(
-        #sensor_temp = obtener_json.get('sensor_temp'),
-        sensor_pulso_cardiaco = obtener_json.get('sensor_pulso_cardiaco')
-        )
-    pulso_guarda = datos_sensor.rangeWarning()
-    if pulso_guarda is not None:
-        new_data = sensors(
-            sensor_pulso_cardiaco = pulso_guarda
-        )
-        db.session.add(new_data)
+    pulso = obtener_json.get("sensor_pulso_cardiaco")
+    if pulso > 100 or pulso < 60:
+        datos_sensor = sensors(sensor_pulso_cardiaco=pulso)
+        db.session.add(datos_sensor)
         db.session.commit()
         return jsonify({'mensaje': 'dato posiblemente peligroso guradado!'}), 200
     else:
@@ -59,11 +53,14 @@ def datosGuardadosBPM():
     return jsonify(lista_datos), 200
 @app.route("/api/testdb")
 def test_db():
-   try:
-        result = db.session.execute(text("SELECT 1"))
-        return jsonify({"mensaje": "DB OK", "resultado": [r[0] for r in result]}), 200
+    try:
+            result = db.session.execute(text("SELECT 1"))
+            return jsonify({"mensaje": "DB OK", "resultado": [r[0] for r in result]}), 200
     except Exception as e:
         return jsonify({"mensaje": "Error DB", "error": str(e)}), 500
+   
+
+
 @app.route("/api/ver", methods = ['GET'])
 def verDatos():
     return jsonify(obtener_json),200
