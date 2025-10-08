@@ -10,7 +10,7 @@ app = Flask(__name__,
            static_folder="frontendPage",
            static_url_path="/")#nombre de fichero actual
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://sensores:FGtmiXdqsqKTjvWHCVUYJv91bEPRcLdp:5432/sensores_3czq" #se debe de copiar toda la ruta(igual a la de la base de datos en el path)
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://sensores:FGtmiXdqsqKTjvWHCVUYJv91bEPRcLdp@dpg-d3it9uje5dus739cvtag-a/sensores_lky1" #se debe de copiar toda la ruta(igual a la de la base de datos en el path)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False#para que no salten errores molestos
 db.init_app(app) #este es el tunel que realiza la base de datos con flask
 #creamos una varibale global de la ruta donde esta el frontend
