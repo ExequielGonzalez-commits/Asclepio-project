@@ -2,6 +2,7 @@ from flask import Flask,jsonify,request,render_template, send_from_directory,ses
 from Models import db, sensors
 from flask_session import Session
 from logging import exception
+from sqlalchemy import text
 from flask_cors import CORS
 import os
 
@@ -58,9 +59,9 @@ def datosGuardadosBPM():
     return jsonify(lista_datos), 200
 @app.route("/api/testdb")
 def test_db():
-    try:
-        result = db.session.execute("SELECT 1")  # consulta mínima
-        return jsonify({"mensaje": "DB OK", "resultado": list(result)}), 200
+   try:
+        result = db.session.execute(text("SELECT 1"))
+        return jsonify({"mensaje": "DB OK", "resultado": [r[0] for r in result]}), 200
     except Exception as e:
         return jsonify({"mensaje": "Error DB", "error": str(e)}), 500
 @app.route("/api/ver", methods = ['GET'])
