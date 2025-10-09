@@ -145,11 +145,20 @@
             width: '100%',
             height:'200px'
         },
+        beforZoom: function(chartContext,{xaxis}){
+            return{
+                xaxis:{
+                    min:1759948800000,
+                    max:1759949100000,
+                }
+            }
+        },
             responsive:[{
             breakpoint:480,
             animations:{
                 enabled:false,
             },
+
             options:{ chart : {width:'100%'}}
         }],
         series:[{
