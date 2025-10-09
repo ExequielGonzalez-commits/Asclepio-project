@@ -138,6 +138,8 @@
             x:new Date(`${d.fecha} ${d.hora}`).getTime(),
             y:d.sensor_pulso_cardiaco
         }));
+        let total_datos = dataBPM_hora.length;
+        let ultimos_datos = dataBPM_hora.slice(total_datos - 10);
         //const data_fecha = data.map(d=> d.fecha)
         var options = {
         chart: {
@@ -178,7 +180,9 @@
         //},
 
         xaxis:{
-            type:'datetime'
+            type:'datetime',
+            min:ultimos_datos[0].x,
+            max:ultimos_datos[ultimos_datos - 1].x
         },
         zoom:{
             enabled:true,
