@@ -18,7 +18,7 @@
   };
  
   //const app = initializeApp(firebaseConfig);
-  // Initialize Firebase
+  initializeApp(firebaseConfig);
    const messaging = getMessaging();
    onBackgroundMessage(messaging,(payload)=>{
         console.log("mensaje en seguno plano", payload)
