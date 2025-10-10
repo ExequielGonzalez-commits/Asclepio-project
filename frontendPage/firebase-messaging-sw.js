@@ -17,9 +17,9 @@
     measurementId: "G-NLWLY7VBET"
   };
  
-  const app = initializeApp(firebaseConfig);
+  //const app = initializeApp(firebaseConfig);
   // Initialize Firebase
-   const messaging = getMessaging(app);
+   const messaging = getMessaging();
    onBackgroundMessage(messaging,(payload)=>{
         console.log("mensaje en seguno plano", payload)
         const notificationTitle = "mesaje cuando no estas en linea";
