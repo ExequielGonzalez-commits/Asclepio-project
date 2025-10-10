@@ -22,7 +22,16 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-   const messaging = getMessaging(app);
+  const messaging = getMessaging(app);
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then((registration) => {
+        console.log('Service Worker registrado!', registration);
+    })
+    .catch((err) => {
+        console.log('Error registrando SW:', err);
+    });
+}
    //getToken(messaging,{vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"})
    function requestPermission(){
     console.log('Requesting permisssion');
