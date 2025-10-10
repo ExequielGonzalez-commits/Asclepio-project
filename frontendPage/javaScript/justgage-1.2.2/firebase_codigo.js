@@ -34,6 +34,7 @@
             getToken(messaging, {vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"}).then(currentToken => {
               if(currentToken){
                 console.log("esto se manda al server");
+                console.log("token del usuario:", currentToken);
               }
               else{
                 console.log("no hay token registrado.requiere que genere uno");
