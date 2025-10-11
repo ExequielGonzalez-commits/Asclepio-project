@@ -20,9 +20,10 @@
     appId: "1:332865941003:web:b7b8483cd42a52cc3e610e",
     measurementId: "G-NLWLY7VBET"
   };
+  // Inicializa Firebase
+  firebase.initializeApp(firebaseConfig);
  
   //const app = initializeApp(firebaseConfig);
-  initializeApp(firebaseConfig);
    const messaging = getMessaging();
    onBackgroundMessage(messaging,(payload)=>{
         console.log("mensaje en seguno plano", payload)
