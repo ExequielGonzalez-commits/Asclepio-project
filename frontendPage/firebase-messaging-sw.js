@@ -24,8 +24,8 @@
   firebase.initializeApp(firebaseConfig);
  
   //const app = initializeApp(firebaseConfig);
-   const messaging = getMessaging();
-   onBackgroundMessage(messaging,(payload)=>{
+   const messaging = firebase.messaging();
+   messaging.onBackgroundMessage(function(payload){
         console.log("mensaje en seguno plano", payload)
         const notificationTitle = "mesaje cuando no estas en linea";
         const notificationOptions = {
