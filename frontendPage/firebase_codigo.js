@@ -69,14 +69,7 @@ if(!localStorage.getItem("notiPermissonAsked")){
 }
 
 onMessage(messaging, (payload) =>{
-   const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-         body: payload.notification.body,
-    };
-    if(Notification.permission == "granted"){
-       new Notification(notificationTitle,notificationOptions)
-    }
-
+  console.log("notificacion", payload)
 });
 
 
