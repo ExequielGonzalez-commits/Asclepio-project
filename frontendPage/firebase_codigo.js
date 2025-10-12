@@ -23,7 +23,7 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
   const messaging = getMessaging(app);
-  if ('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('firebase-messaging-sw.js')
     .then((registration) => {
         console.log('Service Worker registrado!', registration);
@@ -33,7 +33,7 @@
     });
 }
    //getToken(messaging,{vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"})
-   function requestPermission(){
+function requestPermission(){
     console.log('Requesting permisssion');
     Notification.requestPermission().then(permission => {
         if(permission == 'granted'){
@@ -65,14 +65,14 @@
         }
 
     })
-   }
+}
 onMessage(messaging, (payload) =>{
    const notificationTitle = payload.notification.title;
     const notificationOptions = {
          body: payload.notification.body,
     };
       new Notification(notificationTitle,notificationOptions)
-    });
+});
 
 
 requestPermission();
