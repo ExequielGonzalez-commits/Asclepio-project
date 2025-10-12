@@ -66,11 +66,11 @@
 
     })
    }
-    onMessage(messaging, (payload) =>{
-      const notificationTitle = payload.notification.title;
-      const notificationOptions = {
+onMessage(messaging, (payload) =>{
+   const notificationTitle = payload.notification.title;
+    const notificationOptions = {
          body: payload.notification.body,
-      };
+    };
       new Notification(notificationTitle,notificationOptions)
     });
 
