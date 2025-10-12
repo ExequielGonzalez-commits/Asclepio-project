@@ -38,10 +38,18 @@
     Notification.requestPermission().then(permission => {
         if(permission == 'granted'){
             console.log('notificacion permitida');
-            new Notification("prueba", {body: "funciona el push"});
+            //new Notification("prueba", {body: "funciona el push"});
 
             getToken(messaging, {vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"}).then(currentToken => {
               if(currentToken){
+                fetch("/usuarios_token",{
+                  method:'POST',
+                  headers:{
+                    'Content-Type':'application/json'
+
+                  },
+                  body: JSON.stringify(currentToken)
+                })
                 console.log("esto se manda al server");
                 console.log("token del usuario:", currentToken);
               }

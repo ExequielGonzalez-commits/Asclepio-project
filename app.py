@@ -1,7 +1,9 @@
 from flask import Flask,jsonify,request,render_template, send_from_directory,session,redirect
-from Models import db, sensors
+from Models import db, sensors, usuarios_token
 from flask_session import Session
 from logging import exception
+import firebase_admin 
+from firebase_admin import messaging,credentials
 from sqlalchemy import text
 from flask_cors import CORS
 import os
@@ -13,10 +15,14 @@ CORS(app)
 app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://sensores:FGtmiXdqsqKTjvWHCVUYJv91bEPRcLdp@dpg-d3it9uje5dus739cvtag-a/sensores_lky1" #se debe de copiar toda la ruta(igual a la de la base de datos en el path)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False#para que no salten errores molestos
 db.init_app(app)
+#inicializamos la firebase key
+json_path = os.path.join(os.path.dirname(__file__),"secret/asclepio-project-firebase-adminsdk-fbsvc-b23ff192df.json")
+cred = credentials.Certificate(json_path)
+firebase_admin.initialize_app(cred)
 with app.app_context():
     db.create_all()
 #este es el tunel que realiza la base de datos con flask
-
+user_key = {}
 #creamos una varibale global de la ruta donde esta el frontend
 #direccion_front = os.path.join(os.path.dirname(__file__),"frontendPage")
 obtener_json = {}
@@ -25,15 +31,41 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 #aqui empiezan las rutas
 #end point para enviar los datos
-
+@app.route("/usuarios_token", methods = ['POST'])
+def usuarios_db():
+     user_key = request.get_json()
+     if not user_key or 'token' not in user_key:
+             return jsonify({'error': 'No se recibió token'}), 400
+     token_id = usuarios_token(token = user_key['token'])
+     db.session.add(token_id)
+     db.session.commit()
+     return jsonify({'mensaje':'token del usuario guardado'})
+     #pass
+#@app.route("/alerta", methods = ['POST'])
+def alerta_push(titulo, cuerpo_mensaje):
+     usuarios = usuarios_token.query.all()
+     for usuario in usuarios:
+         message = messaging.Message(
+               notification = messaging.Notification(
+                    title = titulo,
+                    body = cuerpo_mensaje
+          ),
+               token=usuario.token
+          ) 
+         try:
+                messaging.send(message)
+                print(f"✅ Notificación enviada a {usuario.token[:20]}...")
+         except Exception as e:
+                        print(f"❌ Error con token {usuario.token[:20]}... {e}")
+                
 @app.route("/api/envio", methods = ["POST"])
-
 def enviar_datos_sensor():
     global obtener_json
     obtener_json = request.get_json()
     #sensor_IR = obtener_json.get("sensor_IR")
     pulso = obtener_json.get("sensor_pulso_cardiaco")
     if pulso > 100 or pulso < 60:
+        alerta_push("alerta del sensor",f"se a pasado del umbral: {pulso}")
         datos_sensor = sensors(sensor_pulso_cardiaco=pulso)
         db.session.add(datos_sensor)
         db.session.commit()

@@ -31,3 +31,7 @@ class sensors(db.Model):
         if self.sensor_pulso_cardiaco > 100 or self.sensor_pulso_cardiaco < 55:
             pulso_guardar = self.sensor_pulso_cardiaco
         return pulso_guardar
+    
+class usuarios_token(db.Model):
+     id = db.Column(db.Integer, primary_key = True)
+     token = db.Column(db.String(300), nullable = False)

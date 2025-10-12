@@ -26,12 +26,15 @@
   //const app = initializeApp(firebaseConfig);
    const messaging = firebase.messaging();
    messaging.onBackgroundMessage(function(payload){
-        console.log("mensaje en seguno plano", payload)
-        const notificationTitle = "mesaje cuando no estas en linea";
-        const notificationOptions = {
-            body:'mensaje push de prueba',
+            console.log("mensaje en seguno plano", payload)
+            const notificationTitle = payload.notification.title;
+            const notificationOptions = {
+              body:payload.notification.body,
         };
         self.registration.showNotification(notificationTitle, notificationOptions);
-   });
-   //getToken(messaging,{vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"})
+        
 
+
+      })
+  
+   //getToken(messaging,{vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"})
