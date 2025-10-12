@@ -48,8 +48,10 @@
                     'Content-Type':'application/json'
 
                   },
-                  body: JSON.stringify(currentToken)
+                  body: JSON.stringify({token: currentToken})
                 })
+                .then(res=> res.json())
+                .then(data=>console.log("respuesta del server", data))
                 console.log("esto se manda al server");
                 console.log("token del usuario:", currentToken);
               }
