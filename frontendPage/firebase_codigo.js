@@ -75,4 +75,4 @@ onMessage(messaging, (payload) =>{
     });
 
 
-   requestPermission();
+requestPermission();
