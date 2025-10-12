@@ -16,7 +16,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://sensores:FGtmiXdqsqKTjvWHC
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False#para que no salten errores molestos
 db.init_app(app)
 #inicializamos la firebase key
-json_path = os.path.join(os.path.dirname(__file__),"secret/asclepio-project-firebase-adminsdk-fbsvc-b23ff192df.json")
+json_path = os.path.join(os.path.dirname(__file__),"FIREBASE_CREDENTIALS")
 cred = credentials.Certificate(json_path)
 firebase_admin.initialize_app(cred)
 with app.app_context():
