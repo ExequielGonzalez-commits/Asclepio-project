@@ -4,7 +4,7 @@ from flask_session import Session
 from logging import exception
 import firebase_admin 
 from firebase_admin import messaging,credentials
-from sqlalchemy import text
+from sqlalchemy import text,func
 from flask_cors import CORS
 import os,json
 
@@ -36,11 +36,26 @@ def usuarios_db():
      user_key = request.get_json()
      if not user_key or 'token' not in user_key:
              return jsonify({'error': 'No se recibió token'}), 400
+     existing = usuarios_token.query.filter_by(token=user_key['token']).first()
+     if existing:
+            return jsonify({'mensaje': 'Token ya existe'}), 200
      token_id = usuarios_token(token = user_key['token'])
      db.session.add(token_id)
      db.session.commit()
+     eliminar_duplicados()
      return jsonify({'mensaje':'token del usuario guardado'})
+
      #pass
+def eliminar_duplicados():
+     encontrar_duplicados = db.session.query(
+          usuarios_token.token
+     ).group_by(usuarios_token.token).having(func.count(usuarios_token.token)>1).all()
+     for (token,) in encontrar_duplicados:
+          registros = usuarios_token.query.filter_by(token=token).all()
+          for registro in registros[1:]:
+               db.session.delete(registro)
+     db.session.commit()
+
 #@app.route("/alerta", methods = ['POST'])
 def alerta_push(titulo, cuerpo_mensaje):
      usuarios = usuarios_token.query.all()
