@@ -38,13 +38,7 @@
     Notification.requestPermission().then(permission => {
         if(permission == 'granted'){
             console.log('notificacion permitida');
-            onMessage(messaging, (payload) =>{
-              const notificationTitle = payload.notification.title;
-              const notificationOptions = {
-                  body: payload.notification.body,
-              };
-              new Notification(notificationTitle,notificationOptions)
-           });
+           
   
             //new Notification("prueba", {body: "funciona el push"});
 
@@ -67,6 +61,13 @@
             .catch(err => {
               console.log("error obtenido",err);
             });
+             onMessage(messaging, (payload) =>{
+              const notificationTitle = payload.notification.title;
+              const notificationOptions = {
+                     body: payload.notification.body,
+              };
+              new Notification(notificationTitle,notificationOptions)
+           });
         }
 
     })
