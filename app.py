@@ -29,6 +29,15 @@ obtener_json = {}
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
+def eliminar_duplicados():
+     encontrar_duplicados = db.session.query(
+          usuarios_token.token
+     ).group_by(usuarios_token.token).having(func.count(usuarios_token.token)>1).all()
+     for (token,) in encontrar_duplicados:
+          registros = usuarios_token.query.filter_by(token=token).all()
+          for registro in registros[1:]:
+               db.session.delete(registro)
+     db.session.commit()
 #aqui empiezan las rutas
 #end point para enviar los datos
 @app.route("/usuarios_token", methods = ['POST'])
@@ -46,15 +55,7 @@ def usuarios_db():
      return jsonify({'mensaje':'token del usuario guardado'})
 
      #pass
-def eliminar_duplicados():
-     encontrar_duplicados = db.session.query(
-          usuarios_token.token
-     ).group_by(usuarios_token.token).having(func.count(usuarios_token.token)>1).all()
-     for (token,) in encontrar_duplicados:
-          registros = usuarios_token.query.filter_by(token=token).all()
-          for registro in registros[1:]:
-               db.session.delete(registro)
-     db.session.commit()
+
 
 #@app.route("/alerta", methods = ['POST'])
 def alerta_push(titulo, cuerpo_mensaje):
