@@ -68,9 +68,9 @@ if(!localStorage.getItem("notiPermissonAsked")){
 
 }
 
-onMessage(messaging, (payload) =>{
-  console.log("notificacion", payload)
-});
+//onMessage(messaging, (payload) =>{
+  //console.log("notificacion", payload)
+//});
 
 
 //requestPermission();
