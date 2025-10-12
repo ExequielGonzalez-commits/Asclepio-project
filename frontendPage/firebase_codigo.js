@@ -33,15 +33,15 @@ if ('serviceWorker' in navigator) {
     });
 }
    //getToken(messaging,{vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"})
-function requestPermission(){
-    console.log('Requesting permisssion');
+if(!localStorage.getItem("notiPermissonAsked")){
+  console.log('Requesting permisssion');
     Notification.requestPermission().then(permission => {
         if(permission == 'granted'){
             console.log('notificacion permitida');
+             localStorage.setItem("notiPermissionAsked", "true");
            
   
             //new Notification("prueba", {body: "funciona el push"});
-
             getToken(messaging, {vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"}).then(currentToken => {
               if(currentToken){
                 fetch("/usuarios_token",{
@@ -65,14 +65,19 @@ function requestPermission(){
         }
 
     })
+
 }
+
 onMessage(messaging, (payload) =>{
    const notificationTitle = payload.notification.title;
     const notificationOptions = {
          body: payload.notification.body,
     };
-      new Notification(notificationTitle,notificationOptions)
+    if(Notification.permission == "granted"){
+       new Notification(notificationTitle,notificationOptions)
+    }
+
 });
 
 
-requestPermission();
+//requestPermission();
