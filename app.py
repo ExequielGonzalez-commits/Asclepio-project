@@ -67,6 +67,10 @@ def alerta_push(titulo, cuerpo_mensaje):
                     title = titulo,
                     body = cuerpo_mensaje
           ),
+          data = {
+               "title":"alerta del sensor",
+               "body": f"se a pasado del umbral"
+          },
                token=usuario.token
           ) 
          try:
