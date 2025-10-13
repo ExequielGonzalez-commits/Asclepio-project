@@ -2,10 +2,7 @@ import {getAuth, signInAnonymously} from "https://www.gstatic.com/firebasejs/12.
 import {getToken, onMessage} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging.js";
 import { messaging } from "./firebase.js";
 const notyf = new Notyf({
-    position:{
-        x:'center',
-        y:'top',
-    }
+    duration:3000,
 });
 const loguearse = ()=>{
     signInAnonymously(getAuth()).then(usuario=>console.log(usuario));
