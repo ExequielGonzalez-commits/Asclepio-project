@@ -21,10 +21,11 @@
     measurementId: "G-NLWLY7VBET"
   };
   // Inicializa Firebase
-  firebase.initializeApp(firebaseConfig);
+
+  const app = firebase.initializeApp(firebaseConfig);
  
   //const app = initializeApp(firebaseConfig);
-   const messaging = firebase.messaging();
+  export const messaging = firebase.messaging(app);
    messaging.onBackgroundMessage(function(payload){
             console.log("mensaje en seguno plano", payload)
             const notificationTitle = payload.notification.title;

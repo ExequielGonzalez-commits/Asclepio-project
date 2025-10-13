@@ -2,7 +2,7 @@
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
-  import {getMessaging, getToken, onMessage} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging.js";
+  import {getMessaging} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging.js";
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,8 +22,11 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-  const messaging = getMessaging(app);
-if ('serviceWorker' in navigator) {
+  export const messaging = getMessaging(app);
+
+
+
+  /*if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(registrations => {
     if(!registrations.find(r => r.active && r.scriptURL.includes('firebase-messaging-sw.js'))) {
         navigator.serviceWorker.register('firebase-messaging-sw.js')
@@ -69,8 +72,8 @@ if(!localStorage.getItem("fcmToken")){
     })
 
 }
-
-onMessage(messaging, (payload) =>{
+*/
+/*onMessage(messaging, (payload) =>{
   console.log("notificacion", payload)
   const div = document.createElement("div")
   div.innerText = `alerta:${payload.data.title} - ${payload.data.body}`
@@ -83,4 +86,4 @@ onMessage(messaging, (payload) =>{
 });
 
 
-//requestPermission();
+//requestPermission();*/
