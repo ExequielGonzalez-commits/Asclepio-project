@@ -43,8 +43,10 @@ onMessage(messaging, (payload)=>{
             x:'center',
             y:'top',
         },
-        duration:3000,
-        ripple:true
+        duration:5000,
+        ripple:true,
+        icon:'<i class="bi bi-exclamation-triangle-fill"></i>'
+        
     });
 
 })
