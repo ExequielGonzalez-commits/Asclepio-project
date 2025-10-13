@@ -24,26 +24,28 @@
   const analytics = getAnalytics(app);
   const messaging = getMessaging(app);
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('firebase-messaging-sw.js')
-    .then((registration) => {
-        console.log('Service Worker registrado!', registration);
-    })
-    .catch((err) => {
-        console.log('Error registrando SW:', err);
-    });
+  navigator.serviceWorker.getRegistrations().then(registrations => {
+    if(!registrations.find(r => r.active && r.scriptURL.includes('firebase-messaging-sw.js'))) {
+        navigator.serviceWorker.register('firebase-messaging-sw.js')
+            .then(reg => console.log('SW registrado', reg))
+            .catch(err => console.log('Error SW', err));
+    }
+ });
+
 }
    //getToken(messaging,{vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"})
-if(!localStorage.getItem("notiPermissonAsked")){
+if(!localStorage.getItem("fcmToken")){
   console.log('Requesting permisssion');
     Notification.requestPermission().then(permission => {
         if(permission == 'granted'){
             console.log('notificacion permitida');
-             localStorage.setItem("notiPermissionAsked", "true");
+            
            
   
             //new Notification("prueba", {body: "funciona el push"});
             getToken(messaging, {vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"}).then(currentToken => {
               if(currentToken){
+                localStorage.setItem("fcmToken", currentToken);
                 fetch("/usuarios_token",{
                   method:'POST',
                   headers:{'Content-Type':'application/json'},
