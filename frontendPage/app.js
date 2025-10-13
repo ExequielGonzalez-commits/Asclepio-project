@@ -1,7 +1,30 @@
 import {getAuth, signInAnonymously} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 import {getToken, onMessage} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging.js";
 import { messaging } from "./firebase.js";
-const notyf = new Notyf();
+const notyf = new Notyf({
+  duration: 5000,
+  position: {
+    x: 'center',
+    y: 'top',
+  },
+  types: [
+    {
+      type: 'warning',
+      background: 'orange',
+      icon: {
+        className: 'material-icons',
+        tagName: 'i',
+        text: 'warning'
+      }
+    },
+    {
+      type: 'error',
+      background: 'indianred',
+      duration: 2000,
+      dismissible: true
+    }
+  ]
+});
 const loguearse = ()=>{
     signInAnonymously(getAuth()).then(usuario=>console.log(usuario));
 }
@@ -37,12 +60,13 @@ onMessage(messaging, (payload)=>{
     console.log("notificacion", payload);
     const title = payload.notification?.title || payload.data?.title || "Alerta";
     const body  = payload.notification?.body || payload.data?.body || "";
-    notyf.success({
+    notyf.open({
+        type:'warning',
         message:title,
-        position:{
-            x:'center',
-            y:'top',
-        },
+        //position:{
+            //x:'center',
+            //y:'top',
+        //},
         duration:5000,
         ripple:true,
         icon:'<i class="bi bi-exclamation-triangle-fill"></i>'
