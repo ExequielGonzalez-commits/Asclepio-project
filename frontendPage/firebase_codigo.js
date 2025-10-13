@@ -76,6 +76,9 @@ onMessage(messaging, (payload) =>{
   div.innerText = `alerta:${payload.data.title} - ${payload.data.body}`
   div.style.background = "yellow";
   div.style.padding = "10px";
+  div.style.position = "fixed";
+
+  div.style.zIndex = 9999;
   document.body.appendChild(div)
 });
 
