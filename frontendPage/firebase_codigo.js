@@ -73,7 +73,7 @@ if(!localStorage.getItem("fcmToken")){
 onMessage(messaging, (payload) =>{
   console.log("notificacion", payload)
   const div = document.createElement("div")
-  div.innerText = `alerta:${payload.notification.title}' - ${payload.notification.body}`
+  div.innerText = `alerta:${payload.notification.title} - ${payload.notification.body}`
   div.style.background = "yellow";
   div.style.padding = "10px";
   document.body.appendChild(div)
