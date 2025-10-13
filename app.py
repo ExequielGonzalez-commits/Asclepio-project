@@ -42,6 +42,7 @@ def eliminar_duplicados():
 #end point para enviar los datos
 @app.route("/usuarios_token", methods = ['POST'])
 def usuarios_db():
+     eliminar_duplicados()
      user_key = request.get_json()
      if not user_key or 'token' not in user_key:
              return jsonify({'error': 'No se recibió token'}), 400
