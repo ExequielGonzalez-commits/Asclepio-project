@@ -62,21 +62,26 @@ def usuarios_db():
 def alerta_push(titulo, cuerpo_mensaje):
      usuarios = usuarios_token.query.all()
      for usuario in usuarios:
-         message = messaging.Message(
+        data_message = messaging.Message(
+            data={
+                "title": titulo,
+                "body": cuerpo_mensaje
+            },
+            token=usuario.token
+        )
+        notification_message = messaging.Message(
                notification = messaging.Notification(
                     title = titulo,
                     body = cuerpo_mensaje
           ),
-          data = {
-               "title":"alerta del sensor",
-               "body": f"se a pasado del umbral"
-          },
-               token=usuario.token
+             token=usuario.token
           ) 
-         try:
-                messaging.send(message)
+        try:
+                
+                messaging.send(data_message)
+                messaging.send(notification_message)
                 print(f"✅ Notificación enviada a {usuario.token[:20]}...")
-         except firebase_admin.exceptions.FirebaseError as error:
+        except firebase_admin.exceptions.FirebaseError as error:
                         print(f"❌ Error con token {usuario.token[:20]}... {error}")
                         db.session.delete(usuario)
                         db.session.commit()
