@@ -187,9 +187,3 @@ body.dark #char{
     }
     
 }
-.notyf {
-    top: 20px !important; /* separación desde el top */
-    left: 50% !important;
-    transform: translateX(-50%);
-    z-index: 99999 !important;
-}

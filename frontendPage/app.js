@@ -1,9 +1,7 @@
 import {getAuth, signInAnonymously} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 import {getToken, onMessage} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging.js";
 import { messaging } from "./firebase.js";
-const notyf = new Notyf({
-    duration:3000,
-});
+const notyf = new Notyf();
 const loguearse = ()=>{
     signInAnonymously(getAuth()).then(usuario=>console.log(usuario));
 }
@@ -39,6 +37,10 @@ onMessage(messaging, (payload)=>{
     console.log("notificacion", payload);
     const title = payload.notification?.title || payload.data?.title || "Alerta";
     const body  = payload.notification?.body || payload.data?.body || "";
-    notyf.success(title);
+    notyf.success({
+        message:title,
+        duration:3000,
+        ripple:true
+    });
 
 })
