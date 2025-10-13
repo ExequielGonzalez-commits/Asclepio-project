@@ -71,8 +71,10 @@ def alerta_push(titulo, cuerpo_mensaje):
          try:
                 messaging.send(message)
                 print(f"✅ Notificación enviada a {usuario.token[:20]}...")
-         except Exception as e:
-                        print(f"❌ Error con token {usuario.token[:20]}... {e}")
+         except firebase_admin.exceptions.FirebaseError as error:
+                        print(f"❌ Error con token {usuario.token[:20]}... {error}")
+                        db.session.delete(usuario)
+                        db.session.commit()
                 
 @app.route("/api/envio", methods = ["POST"])
 def enviar_datos_sensor():
