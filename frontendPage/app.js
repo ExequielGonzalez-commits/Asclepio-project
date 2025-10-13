@@ -4,7 +4,7 @@ import { messaging } from "./firebase.js";
 const notyf = new Notyf({
     position:{
         x:'center',
-        y:'top'
+        y:'top',
     }
 });
 const loguearse = ()=>{
