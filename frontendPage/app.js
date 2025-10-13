@@ -39,6 +39,10 @@ onMessage(messaging, (payload)=>{
     const body  = payload.notification?.body || payload.data?.body || "";
     notyf.success({
         message:title,
+        position:{
+            x:'center',
+            y:'top',
+        },
         duration:3000,
         ripple:true
     });
