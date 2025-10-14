@@ -1,4 +1,4 @@
-import {getAuth, signInAnonymously} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+/*import {getAuth, signInAnonymously} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 import {getToken, onMessage} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging.js";
 import { messaging } from "./firebase.js";
 const notyf = new Notyf({
@@ -25,7 +25,7 @@ const notyf = new Notyf({
     }
   ]
 });
-/*const loguearse = ()=>{
+const loguearse = ()=>{
     signInAnonymously(getAuth()).then(usuario=>console.log(usuario));
 }
     const activarMensaje = async()=>{
@@ -64,7 +64,7 @@ window.addEventListener("load", () => {
     pedirPermiso();
 });
 */
-if(!localStorage.getItem("fcmToken")){
+/*if(!localStorage.getItem("fcmToken")){
   console.log('Requesting permisssion');
     Notification.requestPermission().then(permission => {
         if(permission == 'granted'){
@@ -118,3 +118,4 @@ onMessage(messaging, (payload)=>{
     });
 
 })
+*/

@@ -18,7 +18,30 @@
     measurementId: "G-NLWLY7VBET"
   };
  
-
+const notyf = new Notyf({
+  duration: 5000,
+  position: {
+    x: 'center',
+    y: 'top',
+  },
+  types: [
+    {
+      type: 'warning',
+      background: 'orange',
+      icon: {
+        className: 'material-icons',
+        tagName: 'i',
+        text: 'warning'
+      }
+    },
+    {
+      type: 'error',
+      background: 'indianred',
+      duration: 2000,
+      dismissible: true
+    }
+  ]
+});
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
@@ -26,7 +49,7 @@
 
 
 
-  /*if ('serviceWorker' in navigator) {
+  if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(registrations => {
     if(!registrations.find(r => r.active && r.scriptURL.includes('firebase-messaging-sw.js'))) {
         navigator.serviceWorker.register('firebase-messaging-sw.js')
@@ -72,18 +95,22 @@ if(!localStorage.getItem("fcmToken")){
     })
 
 }
-*/
-/*onMessage(messaging, (payload) =>{
-  console.log("notificacion", payload)
-  const div = document.createElement("div")
-  div.innerText = `alerta:${payload.data.title} - ${payload.data.body}`
-  div.style.background = "yellow";
-  div.style.padding = "10px";
-  div.style.position = "fixed";
 
-  div.style.zIndex = 9999;
-  document.body.appendChild(div)
-});
+onMessage(messaging, (payload)=>{
+    console.log("notificacion", payload);
+    const title = payload.notification?.title || payload.data?.title || "Alerta";
+    const body  = payload.notification?.body || payload.data?.body || "";
+    notyf.open({
+        type:'warning',
+        message:body,
+        //position:{
+            //x:'center',
+            //y:'top',
+        //},
+        duration:5000,
+        ripple:true,
+        icon:'<i class="bi bi-exclamation-triangle-fill"></i>'
+        
+    });
 
-
-//requestPermission();*/
+})
