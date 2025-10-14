@@ -62,7 +62,7 @@ onMessage(messaging, (payload)=>{
     const body  = payload.notification?.body || payload.data?.body || "";
     notyf.open({
         type:'warning',
-        message:title,
+        message:body,
         //position:{
             //x:'center',
             //y:'top',
