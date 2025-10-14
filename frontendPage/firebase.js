@@ -2,7 +2,7 @@
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
-  import {getMessaging} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging.js";
+  import {getMessaging, onMessage} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-messaging.js";
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -59,9 +59,8 @@ const notyf = new Notyf({
  });
 
 }
-   //getToken(messaging,{vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"})
 if(!localStorage.getItem("fcmToken")){
-  console.log('Requesting permisssion');
+  console.log('pedir permiso');
     Notification.requestPermission().then(permission => {
         if(permission == 'granted'){
             console.log('notificacion permitida');
