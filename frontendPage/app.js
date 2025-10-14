@@ -25,7 +25,7 @@ const notyf = new Notyf({
     }
   ]
 });
-const loguearse = ()=>{
+/*const loguearse = ()=>{
     signInAnonymously(getAuth()).then(usuario=>console.log(usuario));
 }
     const activarMensaje = async()=>{
@@ -63,6 +63,42 @@ window.addEventListener("load", () => {
     loguearse(); // se ejecuta al cargar la página
     pedirPermiso();
 });
+*/
+if(!localStorage.getItem("fcmToken")){
+  console.log('Requesting permisssion');
+    Notification.requestPermission().then(permission => {
+        if(permission == 'granted'){
+            console.log('notificacion permitida');
+            
+           
+  
+            //new Notification("prueba", {body: "funciona el push"});
+            getToken(messaging, {vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"}).then(currentToken => {
+              if(currentToken){
+                localStorage.setItem("fcmToken", currentToken);
+                fetch("/usuarios_token",{
+                  method:'POST',
+                  headers:{'Content-Type':'application/json'},
+                  body: JSON.stringify({token: currentToken})
+                })
+                .then(res=> res.json())
+                .then(data=>console.log("respuesta del server", data))
+                console.log("esto se manda al server");
+                console.log("token del usuario:", currentToken);
+              }
+              else{
+                console.log("no hay token registrado.requiere que genere uno");
+              }
+            })
+            .catch(err => {
+              console.log("error obtenido",err);
+            });
+            
+        }
+
+    })
+
+}
 
 onMessage(messaging, (payload)=>{
     console.log("notificacion", payload);
