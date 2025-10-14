@@ -51,7 +51,7 @@ const notyf = new Notyf({
 
   if ('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(registrations => {
-    if(!registrations.find(r => r.active && r.scriptURL.includes('firebase-messaging-sw.js'))) {
+    if(!registrations.find(r => r.active && r.scriptURL && r.scriptURL.includes('firebase-messaging-sw.js'))) {
         navigator.serviceWorker.register('firebase-messaging-sw.js')
             .then(reg => console.log('SW registrado', reg))
             .catch(err => console.log('Error SW', err));
@@ -68,7 +68,7 @@ if(!localStorage.getItem("fcmToken")){
            
   
             //new Notification("prueba", {body: "funciona el push"});
-            getToken(messaging, {vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"}).then(currentToken => {
+            getToken(messaging, {vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"}).then((currentToken ) => {
               if(currentToken){
                 localStorage.setItem("fcmToken", currentToken);
                 fetch("/usuarios_token",{
