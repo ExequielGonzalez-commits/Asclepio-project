@@ -45,7 +45,7 @@ const notyf = new Notyf({
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
-  export const messaging = getMessaging(app);
+  const messaging = getMessaging(app);
 
 
 

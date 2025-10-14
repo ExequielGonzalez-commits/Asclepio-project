@@ -25,7 +25,7 @@
   const app = firebase.initializeApp(firebaseConfig);
  
   //const app = initializeApp(firebaseConfig);
-  export const messaging = firebase.messaging(app);
+  const messaging = firebase.messaging(app);
    messaging.onBackgroundMessage(function(payload){
             console.log("mensaje en seguno plano", payload)
             const notificationTitle = payload.notification.title;
