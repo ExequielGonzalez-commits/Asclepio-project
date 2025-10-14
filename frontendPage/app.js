@@ -51,9 +51,17 @@ const loguearse = ()=>{
 
         }
     }
+const pedirPermiso = async () => {
+  const permiso = await Notification.requestPermission();
+  if (permiso === "granted") {
+    activarMensaje();
+  } else {
+    console.log("Permiso denegado o ignorado");
+  }
+};
 window.addEventListener("load", () => {
     loguearse(); // se ejecuta al cargar la página
-    activarMensaje();
+    pedirPermiso();
 });
 
 onMessage(messaging, (payload)=>{
