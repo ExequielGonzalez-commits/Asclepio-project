@@ -31,11 +31,31 @@ messaging.onBackgroundMessage(function(payload){
             const notificationTitle = payload.notification.title;
             const notificationOptions = {
                  body:payload.notification.body,
-                 icon:'frontendPage/imagenes/favicon-32x32.png',
+                 icon:'/imagenes/favicon-32x32.png',
             };
         self.registration.showNotification(notificationTitle, notificationOptions);
         
 
  })
+ self.addEventListener("notificationclick", function(event){
+    console.log("notificacion clickeada");
+    event.notification.close();
+    const url_para_abrir = 'https://asclepio-project.onrender.com/';
+    event.waitUntil(
+      clients.matchAll({ type:"window",includeUncontrolled:true}).then(windowClients=>{
+        for(let client of windowClients){
+
+            if(client.url === url_para_abrir && 'focus' in client){
+              return client.focus();
+            }
+        }
+        if(clients.openWindow){
+          return clients.openWindow(url_para_abrir);
+        }
+
+      })
+    )
+ 
+  })
   
    //getToken(messaging,{vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"})
