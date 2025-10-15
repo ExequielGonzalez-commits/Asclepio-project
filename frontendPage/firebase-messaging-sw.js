@@ -32,12 +32,15 @@ messaging.onBackgroundMessage(function(payload){
             const notificationOptions = {
                  body:payload.notification.body,
                  icon:'/imagenes/favicon-32x32.png',
+                 data:{
+                  link:payload.data.link || 'https://asclepio-project.onrender.com'
+                 }
             };
         self.registration.showNotification(notificationTitle, notificationOptions);
         
 
  })
- self.addEventListener("notificationclick", function(event){
+ self.addEventListener("notificationclick", (event)=>{
     console.log("notificacion clickeada");
     event.notification.close();
     const url_para_abrir = event.notification.data?.link || 'https://asclepio-project.onrender.com';
