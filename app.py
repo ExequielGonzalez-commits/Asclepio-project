@@ -72,6 +72,18 @@ def alerta_push(titulo, cuerpo_mensaje):
                     title = titulo,
                     body = cuerpo_mensaje
           ),
+          webpush =messaging.WebPushConfig( 
+              fcm_options = messaging.WebpushFCMOptions(
+                     link = "https://asclepio-project.onrender.com/"
+               
+                ),
+                notification={
+                 "icon":"https://asclepio-project.onrender.com/imagenes/favicon-32x32.png",
+                    "click_action":"https://asclepio-project.onrender.com/"
+                }
+            ),
+                
+  
             token=usuario.token
         )
         try:
