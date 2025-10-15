@@ -93,7 +93,7 @@ def enviar_datos_sensor():
     obtener_json = request.get_json()
     #sensor_IR = obtener_json.get("sensor_IR")
     pulso = obtener_json.get("sensor_pulso_cardiaco")
-    if pulso > 100 or pulso < 60:
+    if pulso > 130 or pulso < 70:
         alerta_push("alerta del sensor",f"se a pasado del umbral: {pulso}")
         datos_sensor = sensors(sensor_pulso_cardiaco=pulso)
         db.session.add(datos_sensor)
