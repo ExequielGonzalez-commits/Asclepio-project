@@ -28,12 +28,14 @@
   const messaging = firebase.messaging(app);
 messaging.onBackgroundMessage(function(payload){
             console.log("mensaje en seguno plano", payload)
-            const notificationTitle = payload.notification.title;
+            const notificationTitle = payload.data?.title;
+            const notificationBody = payload.data?.body;
+            const url_para_abrir = payload.data?.link
             const notificationOptions = {
-                 body:payload.notification.body,
+                 body:notificationBody,
                  icon:'/imagenes/favicon-32x32.png',
                  data:{
-                  link:payload.data.link || 'https://asclepio-project.onrender.com'
+                  url:url_para_abrir || 'https://asclepio-project.onrender.com'
                  }
             };
         self.registration.showNotification(notificationTitle, notificationOptions);

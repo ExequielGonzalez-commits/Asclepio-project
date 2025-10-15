@@ -66,13 +66,14 @@ def alerta_push(titulo, cuerpo_mensaje):
             data={
                 "title": titulo,
                 "body": cuerpo_mensaje,
-                "link":"https://asclepio-project.onrender.com/"
+                "link":"https://asclepio-project.onrender.com/",
+                "click_action": "https://asclepio-project.onrender.com/"
             },
             #lo pasamos como notificacion
-            notification = messaging.Notification(
-                    title = titulo,
-                    body = cuerpo_mensaje
-          ),
+            #notification = messaging.Notification(
+                   # title = titulo,
+                   #body = cuerpo_mensaje
+          #),
                 
   
             token=usuario.token
