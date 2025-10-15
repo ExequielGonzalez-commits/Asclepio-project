@@ -26,16 +26,17 @@
  
   //const app = initializeApp(firebaseConfig);
   const messaging = firebase.messaging(app);
-   messaging.onBackgroundMessage(function(payload){
+messaging.onBackgroundMessage(function(payload){
             console.log("mensaje en seguno plano", payload)
             const notificationTitle = payload.notification.title;
             const notificationOptions = {
-              body:payload.notification.body,
-        };
+                 body:payload.notification.body,
+                 icon:"asclepio-favicon-1.png",
+                 badge:"asclepio-favicon-1.png"
+            };
         self.registration.showNotification(notificationTitle, notificationOptions);
         
 
-
-      })
+ })
   
    //getToken(messaging,{vapidKey:"BHxzzEn1JckEKZgbAKwbZgCsPkJu5dVXV0v8UEl9eTJt2ay0X1aCdpbRDR6Z7jXsu2tGyJ4ywyx1aItWIYaUoy8"})
