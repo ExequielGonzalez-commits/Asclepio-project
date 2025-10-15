@@ -31,7 +31,7 @@ messaging.onBackgroundMessage(function(payload){
             const notificationTitle = payload.notification.title;
             const notificationOptions = {
                  body:payload.notification.body,
-                 icon:'frontendPage/imagenes/asclepio-favicon-1.png',
+                 icon:'frontendPage/imagenes/favicon-32x32.png',
             };
         self.registration.showNotification(notificationTitle, notificationOptions);
         
