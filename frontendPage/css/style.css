@@ -164,6 +164,9 @@ body.dark #char{
         margin-top: 20px;
         margin-bottom: 20px;
     }
+    .logo-titulo h1{
+        font-size: 30;
+    }
     #chart, .titulo_secundario{
         height: 200px;
     }
