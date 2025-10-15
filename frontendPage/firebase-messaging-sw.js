@@ -40,7 +40,7 @@ messaging.onBackgroundMessage(function(payload){
  self.addEventListener("notificationclick", function(event){
     console.log("notificacion clickeada");
     event.notification.close();
-    const url_para_abrir = 'https://asclepio-project.onrender.com/';
+    const url_para_abrir = 'https://asclepio-project.onrender.com';
     event.waitUntil(
       clients.matchAll({ type:"window",includeUncontrolled:true}).then(windowClients=>{
         for(let client of windowClients){
