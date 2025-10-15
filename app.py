@@ -65,23 +65,14 @@ def alerta_push(titulo, cuerpo_mensaje):
             #lo pasamos como data
             data={
                 "title": titulo,
-                "body": cuerpo_mensaje
+                "body": cuerpo_mensaje,
+                "link":"https://asclepio-project.onrender.com/"
             },
             #lo pasamos como notificacion
             notification = messaging.Notification(
                     title = titulo,
                     body = cuerpo_mensaje
           ),
-          webpush =messaging.WebPushConfig( 
-              fcm_options = messaging.WebpushFCMOptions(
-                     link = "https://asclepio-project.onrender.com/"
-               
-                ),
-                notification={
-                 "icon":"https://asclepio-project.onrender.com/imagenes/favicon-32x32.png",
-                    "click_action":"https://asclepio-project.onrender.com/"
-                }
-            ),
                 
   
             token=usuario.token
