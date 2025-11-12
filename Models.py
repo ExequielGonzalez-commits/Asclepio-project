@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+from datetime import datetime,timezone
 #lo que hace el modelo es replicar la estructura que cremos en nuestra base de datos
 #tiene que tener los mismos atributos que columnas tiene la tabla
 
@@ -10,7 +10,7 @@ class sensors(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     ##sensor_temp = db.Column(db.Integer)
     sensor_pulso_cardiaco = db.Column(db.Integer)
-    fecha_hora = db.Column(db.DateTime, default = datetime.now )
+    fecha_hora = db.Column(db.DateTime, default = lambda: datetime.now(timezone.utc))
     def __str__(self): #como trabajamos con POO usaremos esto para ver los datos
             return "sensor_temperatura: {}".format(
             ##self.sensor_temp,

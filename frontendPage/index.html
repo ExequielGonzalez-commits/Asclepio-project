@@ -57,7 +57,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>-->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+   <!--  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
+    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
     <script src="javaScript/justgage-1.2.2/raphael-2.1.4.min.js"></script>
     <script src="javaScript/justgage-1.2.2/justgage.js"></script>
     <script src="javaScript/justgage-1.2.2/main.js"></script>
@@ -67,7 +68,7 @@
 
     <script>
         
-    
+        import {createChart} from 'lightweight-charts';
         var g2;
         window.onload = function(){
         var g2 = new JustGage({
@@ -139,76 +140,88 @@
         }, 3500);
 
       };
-
-
-      fetch("/api/datosBPM")
-      .then(response => response.json())
-      .then(data=> {
-        const dataBPM_hora = data.map(d =>({
-            x:new Date(`${d.fecha} ${d.hora}`).getTime(),
-            y:d.sensor_pulso_cardiaco
-        }));
-        let total_datos = dataBPM_hora.length;
-        let ultimos_datos = dataBPM_hora.slice(total_datos - 10);
-        //const data_fecha = data.map(d=> d.fecha)
-        var options = {
-        chart: {
-            type:'line',
-            width: '100%',
-            height:'200px'
-        },
-            responsive:[{
-            breakpoint:480,
-            animations:{
-                enabled:false,
-            },
-
-            options:{ chart : {width:'100%'}}
-        }],
-        series:[{
-            name:'bpm',
-            data:dataBPM_hora
-        }],
-        colors: ['#0000FF'],
-        //stroke:{
-            //curve:'smooth'
-        //},
-        tooltip:{
-            x:{
-                format:"yyyy-MM-dd HH:mm:ss",
-                show:true
-            }
-        },
-
-        //markers:{
-            //size:6,
-            //strokeColors: '#fff',
-            //strokeWidth: 2,
-            //hover:{
-                //size:8
-            //}
-        //},
-
-        xaxis:{
-            type:'datetime',
-            min:ultimos_datos[0].x,
-            max:ultimos_datos[ultimos_datos.length - 1].x
-        },
-        zoom:{
-            enabled:true,
-            type:'x',
-            autoScaleYaxis: true
-
-        },
-        pan:{
-            enabled:true,
-            type:'drag'
-        }
-
-      }
-      var chart = new ApexCharts(document.querySelector("#chart"), options);
-      chart.render();
+      //aqui comenzamos a definir las varibales para el chart
+      const firstChart = createChart(document.getElementById('chart'));
+      const areaSeries = chart.addSeries('AreaSeries',{
+        lineColor: 'blue',
+        topColor: 'rgba(0,0,255,0.5)',
+        bottomColor: 'rgba(0,0,255,0.0)',
       });
+        // Usamos TradingView Lightweight Charts para mostrar la serie temporal (BPM)
+        fetch("/api/datosBPM").then(response => response.json())
+        .then(data=>{
+            areaSeries.setData(data);
+            chart.timeScale().fitContent();
+        });
+
+    //   fetch("/api/datosBPM")
+    //   .then(response => response.json())
+    //   .then(data=> {
+    //     const dataBPM_hora = data.map(d =>({
+    //         x:new Date(`${d.fecha} ${d.hora}`).getTime(),
+    //         y:d.sensor_pulso_cardiaco
+    //     }));
+    //     let total_datos = dataBPM_hora.length;
+    //     let ultimos_datos = dataBPM_hora.slice(total_datos - 10);
+    //     //const data_fecha = data.map(d=> d.fecha)
+    //     var options = {
+    //     chart: {
+    //         type:'line',
+    //         width: '100%',
+    //         height:'200px'
+    //     },
+    //         responsive:[{
+    //         breakpoint:480,
+    //         animations:{
+    //             enabled:false,
+    //         },
+
+    //         options:{ chart : {width:'100%'}}
+    //     }],
+    //     series:[{
+    //         name:'bpm',
+    //         data:dataBPM_hora
+    //     }],
+    //     colors: ['#0000FF'],
+    //     //stroke:{
+    //         //curve:'smooth'
+    //     //},
+    //     tooltip:{
+    //         x:{
+    //             format:"yyyy-MM-dd HH:mm:ss",
+    //             show:true
+    //         }
+    //     },
+
+    //     //markers:{
+    //         //size:6,
+    //         //strokeColors: '#fff',
+    //         //strokeWidth: 2,
+    //         //hover:{
+    //             //size:8
+    //         //}
+    //     //},
+
+    //     xaxis:{
+    //         type:'datetime',
+    //         min:ultimos_datos[0].x,
+    //         max:ultimos_datos[ultimos_datos.length - 1].x
+    //     },
+    //     zoom:{
+    //         enabled:true,
+    //         type:'x',
+    //         autoScaleYaxis: true
+
+    //     },
+    //     pan:{
+    //         enabled:true,
+    //         type:'drag'
+    //     }
+
+    //   }
+    //   var chart = new ApexCharts(document.querySelector("#chart"), options);
+    //   chart.render();
+    //   });
      
        
 

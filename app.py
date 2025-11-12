@@ -7,7 +7,7 @@ from firebase_admin import messaging,credentials
 from sqlalchemy import text,func
 from flask_cors import CORS
 import os,json
-
+from datetime import timezone,date
 app = Flask(__name__,
            static_folder="frontendPage",
            static_url_path="/")#nombre de fichero actual
@@ -108,10 +108,12 @@ def datosGuardadosBPM():
     registros = sensors.query.all()
     lista_datos = [
         {
-            "sensor_pulso_cardiaco":r.sensor_pulso_cardiaco,
+            "time": int(r.fecha_hora.timestamp()),
+            "value":r.sensor_pulso_cardiaco,
             #"fecha_hora":r.fecha_hora
-            "fecha": r.fecha_hora.date().isoformat() if r.fecha_hora  else "Sin fecha",
-            "hora": r.fecha_hora.strftime("%H:%M:%S") if r.fecha_hora else ""
+            #"fecha": r.fecha_hora.date().isoformat() if r.fecha_hora  else "Sin fecha",
+            #"hora": r.fecha_hora.strftime("%H:%M:%S") if r.fecha_hora else ""
+            
         }
         for r in registros
    ]
