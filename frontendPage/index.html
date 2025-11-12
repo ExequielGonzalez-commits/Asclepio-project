@@ -57,7 +57,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/luxon"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon"></script>-->
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- TradingView Lightweight Charts (reemplaza ApexCharts) -->
+    <script src="https://unpkg.com/lightweight-charts@3.8.0/dist/lightweight-charts.standalone.production.js"></script>
     <script src="javaScript/justgage-1.2.2/raphael-2.1.4.min.js"></script>
     <script src="javaScript/justgage-1.2.2/justgage.js"></script>
     <script src="javaScript/justgage-1.2.2/main.js"></script>
@@ -141,74 +142,50 @@
       };
 
 
-      fetch("/api/datosBPM")
-      .then(response => response.json())
-      .then(data=> {
-        const dataBPM_hora = data.map(d =>({
-            x:new Date(`${d.fecha} ${d.hora}`).getTime(),
-            y:d.sensor_pulso_cardiaco
-        }));
-        let total_datos = dataBPM_hora.length;
-        let ultimos_datos = dataBPM_hora.slice(total_datos - 10);
-        //const data_fecha = data.map(d=> d.fecha)
-        var options = {
-        chart: {
-            type:'line',
-            width: '100%',
-            height:'200px'
-        },
-            responsive:[{
-            breakpoint:480,
-            animations:{
-                enabled:false,
-            },
+            // Usamos TradingView Lightweight Charts para mostrar la serie temporal (BPM)
+            (function(){
+                const container = document.getElementById('chart');
+                container.style.width = '100%';
+                container.style.height = '300px';
 
-            options:{ chart : {width:'100%'}}
-        }],
-        series:[{
-            name:'bpm',
-            data:dataBPM_hora
-        }],
-        colors: ['#0000FF'],
-        //stroke:{
-            //curve:'smooth'
-        //},
-        tooltip:{
-            x:{
-                format:"yyyy-MM-dd HH:mm:ss",
-                show:true
-            }
-        },
+                const chart = LightweightCharts.createChart(container, {
+                    layout: { backgroundColor: '#ffffff', textColor: '#000' },
+                    rightPriceScale: { visible: true },
+                    timeScale: { timeVisible: true, secondsVisible: false }
+                });
 
-        //markers:{
-            //size:6,
-            //strokeColors: '#fff',
-            //strokeWidth: 2,
-            //hover:{
-                //size:8
-            //}
-        //},
+                const lineSeries = chart.addLineSeries({ color: '#0000FF' });
 
-        xaxis:{
-            type:'datetime',
-            min:ultimos_datos[0].x,
-            max:ultimos_datos[ultimos_datos.length - 1].x
-        },
-        zoom:{
-            enabled:true,
-            type:'x',
-            autoScaleYaxis: true
+                const loadData = () => {
+                    return fetch('/api/datosBPM')
+                        .then(r => r.json())
+                        .then(data => data.map(d => {
+                            const ms = new Date(`${d.fecha} ${d.hora}`).getTime();
+                            return { time: Math.floor(ms / 1000), value: d.sensor_pulso_cardiaco };
+                        }).filter(p => p.value !== null && p.value !== undefined));
+                };
 
-        },
-        pan:{
-            enabled:true,
-            type:'drag'
-        }
+                loadData().then(points => {
+                    const last = points.slice(Math.max(0, points.length - 50));
+                    lineSeries.setData(last);
+                    if (last.length) {
+                        chart.timeScale().setVisibleRange({ from: last[0].time, to: last[last.length - 1].time });
+                    }
+                }).catch(err => console.error('Error cargando datosBPM:', err));
 
-      }
-      var chart = new ApexCharts(document.querySelector("#chart"), options);
-      chart.render();
-      });
+                // Actualizar periódicamente
+                setInterval(()=>{
+                    loadData().then(points => {
+                        const last = points.slice(Math.max(0, points.length - 50));
+                        lineSeries.setData(last);
+                    }).catch(e=>console.error(e));
+                }, 5000);
+
+                // Ajuste responsive sencillo
+                window.addEventListener('resize', () => {
+                    chart.applyOptions({ width: container.clientWidth });
+                });
+            })();
      
        
 
