@@ -105,16 +105,31 @@ def enviar_datos_sensor():
 
 @app.route("/api/datosBPM")
 def datosGuardadosBPM():
-    registros = sensors.query.all()
+    # Opcional: ?limit=100 para traer solo los ultimos N registros (mejora rendimiento)
+    try:
+        limit = int(request.args.get('limit', 0))
+    except Exception:
+        limit = 0
+
+    query = sensors.query
+    if limit and limit > 0:
+        # traemos los últimos `limit` registros ordenados desc y luego los invertimos para orden asc
+        registros = query.order_by(sensors.fecha_hora.desc()).limit(limit).all()
+        registros = list(reversed(registros))
+    else:
+        registros = query.order_by(sensors.fecha_hora.asc()).all()
+
     lista_datos = [
         {
-            "sensor_pulso_cardiaco":r.sensor_pulso_cardiaco,
-            #"fecha_hora":r.fecha_hora
-            "fecha": r.fecha_hora.date().isoformat() if r.fecha_hora  else "Sin fecha",
-            "hora": r.fecha_hora.strftime("%H:%M:%S") if r.fecha_hora else ""
+            "sensor_pulso_cardiaco": r.sensor_pulso_cardiaco,
+            # mantengo fecha y hora por compatibilidad
+            "fecha": r.fecha_hora.date().isoformat() if r.fecha_hora else "Sin fecha",
+            "hora": r.fecha_hora.strftime("%H:%M:%S") if r.fecha_hora else "",
+            # agrego timestamp en segundos para facilitar uso en front (Lightweight Charts acepta unix seconds)
+            "timestamp": int(r.fecha_hora.timestamp()) if r.fecha_hora else None
         }
         for r in registros
-   ]
+    ]
     return jsonify(lista_datos), 200
 @app.route("/api/testdb")
 def test_db():
