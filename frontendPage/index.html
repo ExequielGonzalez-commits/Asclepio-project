@@ -154,7 +154,7 @@
                     timeScale: { timeVisible: true, secondsVisible: false }
                 });
 
-                const lineSeries = chart.addLineSeries({ color: '#0000FF' });
+                const lineSeries = chart.addAreaSeries({ lineColor: '#ff0000', topColor: 'rgba(255, 0, 0, 0.5)', bottomColor: 'rgba(255, 0, 0, 0.0)'     });
 
                 const parseFechaHora = (fecha, hora) => {
                     if (!fecha) return null;
@@ -181,10 +181,14 @@
                     return fetch('/api/datosBPM')
                         .then(r => r.json())
                         .then(data => data.map(d => {
+                            // Preferimos timestamp si lo provee el backend (unix seconds)
+                            if (d.timestamp && !Number.isNaN(Number(d.timestamp))) {
+                                return { time: Number(d.timestamp), value: d.sensor_pulso_cardiaco };
+                            }
                             const dt = parseFechaHora(d.fecha, d.hora);
                             if (!dt) return null;
                             return { time: Math.floor(dt.getTime() / 1000), value: d.sensor_pulso_cardiaco };
-                        }).filter(p => p && p.value !== null && p.value !== undefined));
+                        }).filter(p => p && p.time !== undefined && p.value !== null && p.value !== undefined));
                 };
 
                 loadData().then(points => {
