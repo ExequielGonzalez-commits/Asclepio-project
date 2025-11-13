@@ -156,13 +156,35 @@
 
                 const lineSeries = chart.addLineSeries({ color: '#0000FF' });
 
+                const parseFechaHora = (fecha, hora) => {
+                    if (!fecha) return null;
+                    // fecha expected format: YYYY-MM-DD
+                    const fparts = String(fecha).split('-').map(Number);
+                    if (fparts.length < 3 || fparts.some(Number.isNaN)) return null;
+                    const year = fparts[0];
+                    const month = fparts[1] - 1; // JS months 0-11
+                    const day = fparts[2];
+
+                    let hh = 0, mm = 0, ss = 0;
+                    if (hora) {
+                        const hparts = String(hora).split(':').map(Number);
+                        if (!hparts.some(Number.isNaN)) {
+                            hh = hparts[0] || 0;
+                            mm = hparts[1] || 0;
+                            ss = hparts[2] || 0;
+                        }
+                    }
+                    return new Date(year, month, day, hh, mm, ss);
+                };
+
                 const loadData = () => {
                     return fetch('/api/datosBPM')
                         .then(r => r.json())
                         .then(data => data.map(d => {
-                            const ms = new Date(`${d.fecha} ${d.hora}`).getTime();
-                            return { time: Math.floor(ms / 1000), value: d.sensor_pulso_cardiaco };
-                        }).filter(p => p.value !== null && p.value !== undefined));
+                            const dt = parseFechaHora(d.fecha, d.hora);
+                            if (!dt) return null;
+                            return { time: Math.floor(dt.getTime() / 1000), value: d.sensor_pulso_cardiaco };
+                        }).filter(p => p && p.value !== null && p.value !== undefined));
                 };
 
                 loadData().then(points => {
