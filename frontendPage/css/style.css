@@ -22,13 +22,14 @@ body.dark .card{
 .titulo{
     text-align: center;
     display: flex;
+    flex-direction: column;
     width: 100%;
-    text-align: center;
     padding: 10px;
     background-color: #590dcc;
     color: white;
-    justify-content: space-between;
-
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
 }
 .titulo h1,h3{
     margin: auto;
@@ -204,13 +205,49 @@ body.dark #char{
 }
 
 .corazon-tooltip {
-  font-size: 9px !important;
+  font-size: 15px !important;
   margin-left: 4px;
   display: inline-block;
   animation: pulseHeart 1s infinite;
+}
+.titulo_secundario {
+    color: white;
+    padding: 10px;
 }
 
 @keyframes pulseHeart {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.1); }
+}
+.navbar{
+    background-color: #7b34e6 !important;
+    border: 1px solid white ;
+    border-radius: 10px;
+    padding: 18px;
+    margin: 10px;
+    margin-bottom: 9px;
+}
+.navbar a{
+    color: white;
+    padding: 6px;
+    margin: 10px;
+    
+}
+.navbar .nav-link{
+    font-weight: bold;
+    color: whitesmoke;
+
+}
+.navbar a:hover{
+    color: #ddd;
+}
+.avatar{
+    border-radius: 50%;
+    background-color: white;
+}
+.navbar .nav-link.active {
+    color: #eae863 !important;  /* o el color que prefieras para el activo */
+}
+.navbar-toggler-icon {
+    color: white !important; 
 }
