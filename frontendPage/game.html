@@ -107,6 +107,12 @@
         <button class="restart-btn">Reiniciar</button>
     </div>
     <script>
+        function shiffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
         const quizData = [
             {
                 question: "¿Cuál es el órgano más grande del cuerpo humano?",
@@ -138,9 +144,20 @@
                 question: "¿Cuántos huesos tiene el cuerpo humano adulto?",
                 options: ["256", "249", "206", "198"],
                 answer: "206"
-            }
+            },
+            {
+                question:"¿Cuál es el grupo sanguíneo considerado donante universal?",
+                options: ["O-", "O+", "AB+", "A+"],
+                answer: "O-"
+            },
+            {
+                question:"¿Cuál es la función principal de los pulmones?",
+                options: ["Intercambio de gases", "Filtrar sangre", "Producir hormonas", "Almacenar nutrientes"],
+                answer: "Intercambio de gases",
+            },
         ];
-
+        shiffleArray(quizData);
+        quizData.forEach(q => shiffleArray(q.options));
         let currentQuestion = 0;
         let score = 0;
         let timeLeft = 30;
@@ -196,14 +213,25 @@
         }
 
         // End the quiz and show the results
-        function endQuiz() {
-            clearInterval(timerInterval);
-            questionEl.style.display = 'none';
-            optionsEl.style.display = 'none';
-            resultEl.style.display = 'block';
-            scoreEl.textContent = score;
-            restartBtn.style.display = 'block';
-        }
+       // End the quiz and show the results with correct answers
+    function endQuiz() {
+        clearInterval(timerInterval);
+        questionEl.style.display = 'none';
+        optionsEl.style.display = 'none';
+        resultEl.style.display = 'block';
+        
+        let resultHTML = `<p>Tu puntaje: ${score} / ${quizData.length}</p>`;
+        resultHTML += '<h3>Respuestas correctas:</h3><ul>';
+        
+        quizData.forEach(q => {
+            resultHTML += `<li><strong>${q.question}</strong><br>Respuesta correcta: ${q.answer}</li>`;
+        });
+        resultHTML += '</ul>';
+        
+        resultEl.innerHTML = resultHTML;
+        restartBtn.style.display = 'block';
+    }
+
 
         // Restart the quiz
         restartBtn.addEventListener('click', () => {
