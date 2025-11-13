@@ -241,13 +241,30 @@ body.dark #char{
 .navbar a:hover{
     color: #ddd;
 }
-.avatar{
+.avatar {
     border-radius: 50%;
     background-color: white;
+    border: 3px solid #39f986;
+    box-shadow: 0 4px 12px rgba(89, 13, 204, 0.4);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.avatar:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 18px rgba(89, 13, 204, 0.6);
 }
 .navbar .nav-link.active {
     color: #eae863 !important;  /* o el color que prefieras para el activo */
 }
 .navbar-toggler-icon {
     color: white !important; 
+}
+.avatar-user {
+    font-weight: bold;
+    color: white;
+    display: flex;
+    align-items: center;
+    background-color: rgba(221, 167, 247, 0.424);
+    border-radius: 10px;
+    gap: 10px;
 }
