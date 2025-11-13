@@ -204,8 +204,9 @@ body.dark #char{
 }
 
 .corazon-tooltip {
-
- font-size:12px ;
+  font-size: 9px !important;
+  margin-left: 4px;
+  display: inline-block;
   animation: pulseHeart 1s infinite;
 }
 
