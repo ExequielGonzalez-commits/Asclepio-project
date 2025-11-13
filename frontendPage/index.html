@@ -154,7 +154,7 @@
                     timeScale: { timeVisible: true, secondsVisible: false }
                 });
 
-                const lineSeries = chart.addAreaSeries({ lineColor: '#9fb1ff', topColor: 'rgba(0, 0, 255, 0.5)', bottomColor: 'rgba(0, 0, 255, 0.0)'    });
+                const lineSeries = chart.addAreaSeries({ lineColor: '#590dcc', topColor: 'rgba(89, 13, 204, 0.4)', bottomColor: 'rgba(89, 13, 204, 0.05)'    });
 
                 const parseFechaHora = (fecha, hora) => {
                     if (!fecha) return null;
@@ -231,7 +231,7 @@
                     boxShadow: '0 2px 8px rgba(0,0,0,0.6)',
                     fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
                 });
-                toolTip.innerHTML = '<div style="font-size:11px;color:#9fb1ff;margin-bottom:4px;">BPM</div><div style="font-size:20px;font-weight:700;color:white;line-height:1">--</div><div style="font-size:11px;color:#cfd7ff;margin-top:6px;">--</div>';
+                toolTip.innerHTML = '<div style="font-size:11px;color:#9fb1ff;margin-bottom:4px;">BPM<i class="bi bi-heart-pulse"></i></div><div style="font-size:20px;font-weight:700;color:white;line-height:1">--</div><div style="font-size:11px;color:#cfd7ff;margin-top:6px;">--</div>';
                 container.style.position = container.style.position || 'relative';
                 container.appendChild(toolTip);
 
