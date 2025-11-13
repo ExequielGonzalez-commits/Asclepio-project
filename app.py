@@ -12,7 +12,7 @@ app = Flask(__name__,
            static_folder="frontendPage",
            static_url_path="/")#nombre de fichero actual
 CORS(app)
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://sensores_xn1o_user:Qa53Da6QqjHvrOJXBiWxtvctxX4LWFxe@dpg-d49to47diees73cocnmg-a/sensores_xn1o" #se debe de copiar toda la ruta(igual a la de la base de datos en el path)
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://sensores_pxhw_user:XgVngzHm0TuAPPk4dfnw2uywHjH2pB1I@dpg-d4adlabe5dus73a2abj0-a.oregon-postgres.render.com/sensores_pxhw" #se debe de copiar toda la ruta(igual a la de la base de datos en el path)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False#para que no salten errores molestos
 db.init_app(app)
 #inicializamos la firebase key
@@ -92,7 +92,7 @@ def enviar_datos_sensor():
     global obtener_json
     obtener_json = request.get_json()
     #sensor_IR = obtener_json.get("sensor_IR")
-    pulso = obtener_json.gete("sensor_pulso_cardiaco")
+    pulso = obtener_json.get("sensor_pulso_cardiaco")
     if pulso > 130 or pulso < 70:
         alerta_push("alerta del sensor",f"se a pasado del umbral: {pulso}")
         datos_sensor = sensors(sensor_pulso_cardiaco=pulso)
