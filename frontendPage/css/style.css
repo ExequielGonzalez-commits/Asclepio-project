@@ -208,6 +208,7 @@ body.dark #char{
   font-size: 15px !important;
   margin-left: 4px;
   display: inline-block;
+  color: rgb(231, 29, 29);
   animation: pulseHeart 1s infinite;
 }
 .titulo_secundario {
