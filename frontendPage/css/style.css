@@ -202,3 +202,14 @@ body.dark #char{
     justify-content: center;
     margin: auto;
 }
+
+.corazon-tooltip {
+
+ font-size:12px ;
+  animation: pulseHeart 1s infinite;
+}
+
+@keyframes pulseHeart {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
